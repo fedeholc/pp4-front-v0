@@ -1,0 +1,1434 @@
+openapi: 3.0.0
+info:
+  title: PP4 Backend API
+  description: API para la gestión de áreas, usuarios, clientes, pedidos, facturas, técnicos y autenticación.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor local de desarrollo
+paths:
+  /areas:
+    get:
+      summary: Obtener todas las áreas
+      tags:
+        - Areas
+      responses:
+        "200":
+          description: Lista de áreas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nombre:
+                      type: string
+                    descripcion:
+                      type: string
+    post:
+      summary: Crear un área
+      tags:
+        - Areas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcion:
+                  type: string
+      responses:
+        "201":
+          description: Área creada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  descripcion:
+                    type: string
+  /areas/{id}:
+    get:
+      summary: Obtener un área por ID
+      tags:
+        - Areas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Área encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  descripcion:
+                    type: string
+        "404":
+          description: Área no encontrada
+    put:
+      summary: Actualizar un área
+      tags:
+        - Areas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcion:
+                  type: string
+      responses:
+        "200":
+          description: Área actualizada
+    delete:
+      summary: Eliminar un área
+      tags:
+        - Areas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Área eliminada
+        "404":
+          description: Área no encontrada
+  /auth/login:
+    post:
+      summary: Login de usuario
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 4
+      responses:
+        "200":
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+                      rol:
+                        type: string
+                        enum: ["cliente", "tecnico", "admin"]
+        "400":
+          description: Datos inválidos o incompletos
+        "401":
+          description: Credenciales inválidas
+        "500":
+          description: Error interno del servidor
+  /auth/register:
+    post:
+      summary: Registro de usuario
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 4
+                rol:
+                  type: string
+                  enum: ["cliente", "tecnico", "admin"]
+      responses:
+        "201":
+          description: Usuario registrado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                    format: email
+                  rol:
+                    type: string
+                    enum: ["cliente", "tecnico", "admin"]
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /clientes:
+    get:
+      summary: Obtener todos los clientes
+      tags:
+        - Clientes
+      responses:
+        "200":
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cliente"
+    post:
+      summary: Crear un cliente
+      tags:
+        - Clientes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cliente"
+      responses:
+        "201":
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cliente"
+  /clientes/{id}:
+    get:
+      summary: Obtener un cliente por ID
+      tags:
+        - Clientes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cliente"
+        "404":
+          description: Cliente no encontrado
+    put:
+      summary: Actualizar un cliente
+      tags:
+        - Clientes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cliente"
+      responses:
+        "200":
+          description: Cliente actualizado
+    delete:
+      summary: Eliminar un cliente
+      tags:
+        - Clientes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cliente eliminado
+        "404":
+          description: Cliente no encontrado
+  /facturas:
+    get:
+      summary: Obtener todas las facturas
+      tags:
+        - Facturas
+      responses:
+        "200":
+          description: Lista de facturas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    clienteId:
+                      type: integer
+                    total:
+                      type: number
+                    fecha:
+                      type: string
+                      format: date-time
+    post:
+      summary: Crear una factura
+      tags:
+        - Facturas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteId:
+                  type: integer
+                total:
+                  type: number
+                fecha:
+                  type: string
+                  format: date-time
+      responses:
+        "201":
+          description: Factura creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  clienteId:
+                    type: integer
+                  total:
+                    type: number
+                  fecha:
+                    type: string
+                    format: date-time
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /facturas/{id}:
+    get:
+      summary: Obtener una factura por ID
+      tags:
+        - Facturas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Factura encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  clienteId:
+                    type: integer
+                  total:
+                    type: number
+                  fecha:
+                    type: string
+                    format: date-time
+        "404":
+          description: Factura no encontrada
+    put:
+      summary: Actualizar una factura
+      tags:
+        - Facturas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteId:
+                  type: integer
+                total:
+                  type: number
+                fecha:
+                  type: string
+                  format: date-time
+      responses:
+        "200":
+          description: Factura actualizada exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Factura no encontrada
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar una factura
+      tags:
+        - Facturas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Factura eliminada exitosamente
+        "404":
+          description: Factura no encontrada
+        "500":
+          description: Error interno del servidor
+  /pedidos:
+    get:
+      summary: Obtener todos los pedidos
+      tags:
+        - Pedidos
+      responses:
+        "200":
+          description: Lista de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    clienteId:
+                      type: integer
+                    estado:
+                      type: string
+                    fecha:
+                      type: string
+                      format: date-time
+    post:
+      summary: Crear un pedido
+      tags:
+        - Pedidos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteId:
+                  type: integer
+                estado:
+                  type: string
+                fecha:
+                  type: string
+                  format: date-time
+      responses:
+        "201":
+          description: Pedido creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  clienteId:
+                    type: integer
+                  estado:
+                    type: string
+                  fecha:
+                    type: string
+                    format: date-time
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /pedidos/{id}:
+    get:
+      summary: Obtener un pedido por ID
+      tags:
+        - Pedidos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Pedido encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  clienteId:
+                    type: integer
+                  estado:
+                    type: string
+                  fecha:
+                    type: string
+                    format: date-time
+        "404":
+          description: Pedido no encontrado
+    put:
+      summary: Actualizar un pedido
+      tags:
+        - Pedidos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteId:
+                  type: integer
+                estado:
+                  type: string
+                fecha:
+                  type: string
+                  format: date-time
+      responses:
+        "200":
+          description: Pedido actualizado exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Pedido no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un pedido
+      tags:
+        - Pedidos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Pedido eliminado exitosamente
+        "404":
+          description: Pedido no encontrado
+        "500":
+          description: Error interno del servidor
+  /pedido-candidatos:
+    get:
+      summary: Obtener todos los candidatos de pedidos
+      tags:
+        - PedidoCandidatos
+      responses:
+        "200":
+          description: Lista de candidatos de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pedidoId:
+                      type: integer
+                    tecnicoId:
+                      type: integer
+                    estado:
+                      type: string
+    post:
+      summary: Crear un candidato de pedido
+      tags:
+        - PedidoCandidatos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedidoId:
+                  type: integer
+                tecnicoId:
+                  type: integer
+                estado:
+                  type: string
+      responses:
+        "201":
+          description: Candidato de pedido creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  pedidoId:
+                    type: integer
+                  tecnicoId:
+                    type: integer
+                  estado:
+                    type: string
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /pedido-candidatos/{id}:
+    get:
+      summary: Obtener un candidato de pedido por ID
+      tags:
+        - PedidoCandidatos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Candidato de pedido encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  pedidoId:
+                    type: integer
+                  tecnicoId:
+                    type: integer
+                  estado:
+                    type: string
+        "404":
+          description: Candidato de pedido no encontrado
+    put:
+      summary: Actualizar un candidato de pedido
+      tags:
+        - PedidoCandidatos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedidoId:
+                  type: integer
+                tecnicoId:
+                  type: integer
+                estado:
+                  type: string
+      responses:
+        "200":
+          description: Candidato de pedido actualizado exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Candidato de pedido no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un candidato de pedido
+      tags:
+        - PedidoCandidatos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Candidato de pedido eliminado exitosamente
+        "404":
+          description: Candidato de pedido no encontrado
+        "500":
+          description: Error interno del servidor
+  /pedido-disponibilidad:
+    get:
+      summary: Obtener todas las disponibilidades de pedidos
+      tags:
+        - PedidoDisponibilidad
+      responses:
+        "200":
+          description: Lista de disponibilidades de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pedidoId:
+                      type: integer
+                    fechaInicio:
+                      type: string
+                      format: date-time
+                    fechaFin:
+                      type: string
+                      format: date-time
+    post:
+      summary: Crear una disponibilidad de pedido
+      tags:
+        - PedidoDisponibilidad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedidoId:
+                  type: integer
+                fechaInicio:
+                  type: string
+                  format: date-time
+                fechaFin:
+                  type: string
+                  format: date-time
+      responses:
+        "201":
+          description: Disponibilidad de pedido creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  pedidoId:
+                    type: integer
+                  fechaInicio:
+                    type: string
+                    format: date-time
+                  fechaFin:
+                    type: string
+                    format: date-time
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /pedido-disponibilidad/{id}:
+    get:
+      summary: Obtener una disponibilidad de pedido por ID
+      tags:
+        - PedidoDisponibilidad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Disponibilidad de pedido encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  pedidoId:
+                    type: integer
+                  fechaInicio:
+                    type: string
+                    format: date-time
+                  fechaFin:
+                    type: string
+                    format: date-time
+        "404":
+          description: Disponibilidad de pedido no encontrada
+    put:
+      summary: Actualizar una disponibilidad de pedido
+      tags:
+        - PedidoDisponibilidad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedidoId:
+                  type: integer
+                fechaInicio:
+                  type: string
+                  format: date-time
+                fechaFin:
+                  type: string
+                  format: date-time
+      responses:
+        "200":
+          description: Disponibilidad de pedido actualizada exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Disponibilidad de pedido no encontrada
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar una disponibilidad de pedido
+      tags:
+        - PedidoDisponibilidad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Disponibilidad de pedido eliminada exitosamente
+        "404":
+          description: Disponibilidad de pedido no encontrada
+        "500":
+          description: Error interno del servidor
+  /tecnicos:
+    get:
+      summary: Obtener todos los técnicos
+      tags:
+        - Técnicos
+      responses:
+        "200":
+          description: Lista de técnicos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nombre:
+                      type: string
+                    especialidad:
+                      type: string
+    post:
+      summary: Crear un técnico
+      tags:
+        - Técnicos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                especialidad:
+                  type: string
+      responses:
+        "201":
+          description: Técnico creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  especialidad:
+                    type: string
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /tecnicos/{id}:
+    get:
+      summary: Obtener un técnico por ID
+      tags:
+        - Técnicos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Técnico encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  especialidad:
+                    type: string
+        "404":
+          description: Técnico no encontrado
+    put:
+      summary: Actualizar un técnico
+      tags:
+        - Técnicos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                especialidad:
+                  type: string
+      responses:
+        "200":
+          description: Técnico actualizado exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Técnico no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un técnico
+      tags:
+        - Técnicos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Técnico eliminado exitosamente
+        "404":
+          description: Técnico no encontrado
+        "500":
+          description: Error interno del servidor
+  /tecnico-areas:
+    get:
+      summary: Obtener todas las áreas asignadas a técnicos
+      tags:
+        - TecnicoAreas
+      responses:
+        "200":
+          description: Lista de áreas asignadas a técnicos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    tecnicoId:
+                      type: integer
+                    areaId:
+                      type: integer
+    post:
+      summary: Asignar un área a un técnico
+      tags:
+        - TecnicoAreas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tecnicoId:
+                  type: integer
+                areaId:
+                  type: integer
+      responses:
+        "201":
+          description: Área asignada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  tecnicoId:
+                    type: integer
+                  areaId:
+                    type: integer
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /tecnico-areas/{id}:
+    get:
+      summary: Obtener una asignación de área por ID
+      tags:
+        - TecnicoAreas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Asignación de área encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  tecnicoId:
+                    type: integer
+                  areaId:
+                    type: integer
+        "404":
+          description: Asignación de área no encontrada
+    put:
+      summary: Actualizar una asignación de área
+      tags:
+        - TecnicoAreas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tecnicoId:
+                  type: integer
+                areaId:
+                  type: integer
+      responses:
+        "200":
+          description: Asignación de área actualizada exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Asignación de área no encontrada
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar una asignación de área
+      tags:
+        - TecnicoAreas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Asignación de área eliminada exitosamente
+        "404":
+          description: Asignación de área no encontrada
+        "500":
+          description: Error interno del servidor
+  /usuarios:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    username:
+                      type: string
+                    email:
+                      type: string
+                    rol:
+                      type: string
+    post:
+      summary: Crear un usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 4
+                rol:
+                  type: string
+                  enum: ["cliente", "tecnico", "admin"]
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  rol:
+                    type: string
+                    enum: ["cliente", "tecnico", "admin"]
+        "400":
+          description: Datos inválidos o incompletos
+        "500":
+          description: Error interno del servidor
+  /usuarios/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  rol:
+                    type: string
+                    enum: ["cliente", "tecnico", "admin"]
+        "404":
+          description: Usuario no encontrado
+    put:
+      summary: Actualizar un usuario
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 4
+                rol:
+                  type: string
+                  enum: ["cliente", "tecnico", "admin"]
+      responses:
+        "200":
+          description: Usuario actualizado exitosamente
+        "400":
+          description: Datos inválidos o incompletos
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un usuario
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuario eliminado exitosamente
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+        usuarioId:
+          type: integer
+        nombre:
+          type: string
+        apellido:
+          type: string
+        telefono:
+          type: string
+        direccion:
+          type: string
+        fechaRegistro:
+          type: string
+          format: date-time
+    Area:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        rol:
+          type: string
+          enum: ["cliente", "tecnico", "admin"]
+    Tecnico:
+      type: object
+      properties:
+        id:
+          type: integer
+        usuarioId:
+          type: integer
+        nombre:
+          type: string
+        apellido:
+          type: string
+        telefono:
+          type: string
+        direccion:
+          type: string
+        caracteristicas:
+          type: string
+        fechaRegistro:
+          type: string
+          format: date-time
+    TecnicoArea:
+      type: object
+      properties:
+        id:
+          type: integer
+        tecnicoId:
+          type: integer
+        areaId:
+          type: integer
+    Pedido:
+      type: object
+      properties:
+        id:
+          type: integer
+        clienteId:
+          type: integer
+        tecnicoId:
+          type: integer
+        estado:
+          type: string
+          enum:
+            [
+              "sin_candidatos",
+              "con_candidatos",
+              "tecnico_seleccionado",
+              "cancelado",
+              "finalizado",
+              "calificado",
+            ]
+        areaId:
+          type: integer
+        requerimiento:
+          type: string
+        calificacion:
+          type: integer
+        comentario:
+          type: string
+        respuesta:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+        fechaCierre:
+          type: string
+          format: date-time
+        fechaCancelado:
+          type: string
+          format: date-time
+    PedidoDisponibilidad:
+      type: object
+      properties:
+        id:
+          type: integer
+        pedidoId:
+          type: integer
+        clienteId:
+          type: integer
+        dia:
+          type: string
+          enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
+        horaInicio:
+          type: string
+        horaFin:
+          type: string
+    PedidoCandidatos:
+      type: object
+      properties:
+        id:
+          type: integer
+        pedidoId:
+          type: integer
+        tecnicoId:
+          type: integer
+    Factura:
+      type: object
+      properties:
+        id:
+          type: integer
+        usuarioId:
+          type: integer
+        fecha:
+          type: string
+          format: date-time
+        descripcion:
+          type: string
+        total:
+          type: number
+        metodoPago:
+          type: string
+          enum: ["tarjeta", "transferencia"]
+security:
+  - bearerAuth: []
