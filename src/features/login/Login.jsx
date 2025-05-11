@@ -8,12 +8,14 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import "@src/App.css";
 import * as api from "../../api";
+import { UserContext } from "../../contexts/UserContext";
 
-export function Login({ onLogin }) {
+export function Login() {
+  const { login } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,7 +29,7 @@ export function Login({ onLogin }) {
     try {
       const res = await api.login({ email, password });
       if (res.token && res.user) {
-        onLogin(res.user, res.token);
+        login(res.user, res.token);
         navigate("/menu");
       } else {
         setError("Credenciales inválidas");
