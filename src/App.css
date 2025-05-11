@@ -1,0 +1,22 @@
+body {
+  min-height: 100dvh;
+  margin: 0;
+}
+
+.card {
+  background-color: #e8ff001c;
+  box-shadow: var(--shadow-3);
+  outline: 1px solid var(--accent-8);
+}
+
+.button {
+  transition: all 0.2s ease;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

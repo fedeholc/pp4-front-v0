@@ -13,8 +13,10 @@ import "@radix-ui/themes/styles.css";
 import { useState } from "react";
 import * as api from "./api";
 import "./App.css";
+import { useNavigate } from "react-router";
 
 export function RegisterCliente() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -78,11 +80,10 @@ export function RegisterCliente() {
       </Box>
       <Card
         variant="ghost"
+        className="card"
         style={{
           padding: "2rem",
           margin: "0",
-          boxShadow: "var(--shadow-3)",
-          outline: "1px solid var(--accent-8)",
         }}
       >
         <form onSubmit={handleSubmit}>
@@ -149,18 +150,39 @@ export function RegisterCliente() {
               onChange={handleChange}
               required
             />
-            <Button type="submit" size="3" loading={loading} disabled={loading}>
+            <Button
+              type="submit"
+              style={{ marginTop: "1rem" }}
+              size="3"
+              loading={loading}
+              disabled={loading}
+            >
               Registrarse
             </Button>
-            {error && <Callout.Root color="red">{error}</Callout.Root>}
-            {success && (
-              <Callout.Root color="green">
-                Registro exitoso. Ya puedes iniciar sesión.
-              </Callout.Root>
-            )}
           </Flex>
         </form>
       </Card>
+      {error && <Callout.Root color="red">{error}</Callout.Root>}
+      {success && (
+        <Flex
+          direction={"column"}
+          gap="4"
+          align="center"
+          style={{ marginTop: "1rem" }}
+        >
+          <Callout.Root color="green">
+            Registro exitoso. Ya puedes iniciar sesión.
+          </Callout.Root>
+          <Button
+            className="button"
+            size="3"
+            variant="outline"
+            onClick={() => navigate("/login")}
+          >
+            Iniciar Sesión
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 }

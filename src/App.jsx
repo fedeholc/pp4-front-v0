@@ -1,4 +1,4 @@
-import { Flex, Text, Theme } from "@radix-ui/themes";
+import { Button, Flex, Text, Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { BrowserRouter, Route, Routes, useParams } from "react-router";
 import "./App.css";
@@ -106,11 +106,10 @@ function LoginScreen({ onLogin }) {
       </Box>
       <Card
         variant="ghost"
+        className="card"
         style={{
           padding: "2rem",
           margin: "0",
-          boxShadow: "var(--shadow-3)",
-          outline: "1px solid var(--accent-8)",
         }}
       >
         <form onSubmit={handleSubmit}>
@@ -135,14 +134,16 @@ function LoginScreen({ onLogin }) {
               size="3"
               placeholder="Contraseña"
             />
-            <RadixButton
+            <Button
+              style={{ marginTop: "1rem" }}
+              className="button"
               type="submit"
               size="3"
               loading={loading}
               disabled={loading}
             >
               Ingresar
-            </RadixButton>
+            </Button>
             {error && <Callout.Root color="red">{error}</Callout.Root>}
           </Flex>
         </form>
@@ -162,9 +163,8 @@ export function RegisterScreen() {
       justify="center"
       style={{ minHeight: "60vh" }}
     >
-      <Text size="5">
-        Pantalla de Registro ({tipo === "tecnico" ? "Técnico" : "Cliente"}) (por
-        implementar)
+      <Text size="6" weight="bold">
+        ERROR
       </Text>
     </Flex>
   );
