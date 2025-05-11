@@ -189,6 +189,8 @@ paths:
                 rol:
                   type: string
                   enum: ["cliente", "tecnico", "admin"]
+                token:
+                  type: string
       responses:
         "201":
           description: Usuario registrado exitosamente
@@ -1156,8 +1158,6 @@ paths:
             schema:
               type: object
               properties:
-                username:
-                  type: string
                 email:
                   type: string
                   format: email
@@ -1177,14 +1177,14 @@ paths:
                 properties:
                   id:
                     type: integer
-                  username:
-                    type: string
                   email:
                     type: string
                     format: email
                   rol:
                     type: string
                     enum: ["cliente", "tecnico", "admin"]
+                  token:
+                    type: string
         "400":
           description: Datos inválidos o incompletos
         "500":

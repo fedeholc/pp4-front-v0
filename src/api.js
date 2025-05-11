@@ -103,7 +103,7 @@ export const login = (data) =>
 /**
  * Registro de usuario
  * @param {{email: string, password: string, rol: string}} data
- * @returns {Promise<Usuario>}
+ * @returns {Promise<Usuario & { token: string}>}
  */
 export const register = (data) =>
   fetch(`${API_URL}/auth/register`, {
@@ -565,7 +565,8 @@ export const getUsuario = (id, token) =>
  * Crear un usuario
  * @param {Partial<Usuario>} data
  * @param {string} token
- * @returns {Promise<Usuario>}
+ * @returns {Promise<Usuario & { token: string}>}
+ *
  */
 export const createUsuario = (data, token) =>
   fetch(`${API_URL}/usuarios`, {
