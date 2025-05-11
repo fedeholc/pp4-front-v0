@@ -7,7 +7,7 @@ export function Home() {
   const navigate = useNavigate();
   return (
     <Flex direction="column" align="center" justify="center" height={"100dvh"}>
-      <Card className="card" style={{ padding: "2rem" }}>
+      <Card className="card" variant="ghost" style={{ padding: "2rem" }}>
         <Flex direction="column" gap="4" align="center">
           <Text size="6" weight="bold">
             Bienvenido a Asistec
@@ -16,25 +16,24 @@ export function Home() {
             <Button
               className="button"
               size="3"
+              onClick={() => navigate("/register/cliente")}
+            >
+              Registrarme como cliente
+            </Button>
+            <Button
+              className="button"
+              size="3"
+              onClick={() => navigate("/register/tecnico")}
+            >
+              Registrarme como técnico
+            </Button>
+            <Button
+              className="button"
+              size="3"
+              variant="outline"
               onClick={() => navigate("/login")}
             >
               Iniciar sesión
-            </Button>
-            <Button
-              className="button"
-              size="3"
-              variant="outline"
-              onClick={() => navigate("/register/cliente")}
-            >
-              Registrarse como cliente
-            </Button>
-            <Button
-              className="button"
-              size="3"
-              variant="outline"
-              onClick={() => navigate("/register/tecnico")}
-            >
-              Registrarse como técnico
             </Button>
           </Flex>
         </Flex>

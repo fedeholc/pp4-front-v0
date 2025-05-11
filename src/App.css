@@ -4,9 +4,10 @@ body {
 }
 
 .card {
-  background-color: #e8ff001c;
+  /* background-color: #e8ff001c; */
   box-shadow: var(--shadow-3);
   outline: 1px solid var(--accent-8);
+  background: linear-gradient(345deg , #eaff0005, #eaff002a);
 }
 
 .button {
