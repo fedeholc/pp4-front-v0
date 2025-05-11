@@ -78,8 +78,7 @@ export function RegisterCliente() {
           Registro como Cliente
         </Text>
       </Box>
-      <Card
-        variant="ghost"
+      <Box
         className="card"
         style={{
           padding: "2rem",
@@ -161,7 +160,7 @@ export function RegisterCliente() {
             </Button>
           </Flex>
         </form>
-      </Card>
+      </Box>
       {error && <Callout.Root color="red">{error}</Callout.Root>}
       {success && (
         <Flex

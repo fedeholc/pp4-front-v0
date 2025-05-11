@@ -53,8 +53,7 @@ export function Login() {
           Iniciar sesión
         </Text>
       </Box>
-      <Card
-        variant="ghost"
+      <Box
         className="card"
         style={{
           padding: "2rem",
@@ -96,7 +95,7 @@ export function Login() {
             {error && <Callout.Root color="red">{error}</Callout.Root>}
           </Flex>
         </form>
-      </Card>
+      </Box>
     </Flex>
   );
 }

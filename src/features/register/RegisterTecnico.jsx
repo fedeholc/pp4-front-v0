@@ -77,8 +77,7 @@ export function RegisterTecnico() {
           Registro como Técnico
         </Text>
       </Box>
-      <Card
-        variant="ghost"
+      <Box
         className="card"
         style={{
           padding: "2rem",
@@ -170,7 +169,7 @@ export function RegisterTecnico() {
             )}
           </Flex>
         </form>
-      </Card>
+      </Box>
     </Flex>
   );
 }

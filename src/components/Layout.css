@@ -1,0 +1,54 @@
+.layout {
+  display: grid;
+  grid-template-rows: fit-content(0) 1fr fit-content(0);
+  min-height: 100dvh;
+}
+
+.footer {
+  margin-top: 2rem;
+  border-top: 1px solid var(--accent-9);
+  /*   background-color: #e8ff001c; */
+  text-align: center;
+  color: var(--accent-12);
+  padding: 0.5rem;
+}
+
+.nav {
+  margin-bottom: 2rem;
+  /*   background-color: #e8ff001c; */
+  text-align: center;
+  color: var(--accent-12);
+  padding: 0.5 0rem;
+  box-shadow: inset 0 -1px 0 0 #afb9a8;
+
+  .rt-BaseTabList {
+    box-shadow: inset 0 -1px 0 0 #afb9a8;
+
+  }
+}
+
+.nav-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.hamburger {
+  padding: 0 1rem 0.4rem 1rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  button {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.rt-BaseMenuItem {
+  cursor: pointer;
+}

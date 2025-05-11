@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Text } from "@radix-ui/themes";
+import { Box, Button, Card, Flex, Text } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { useNavigate } from "react-router";
 import "@src/App.css";
@@ -7,7 +7,7 @@ export function Home() {
   const navigate = useNavigate();
   return (
     <Flex direction="column" align="center" justify="center" height={"100dvh"}>
-      <Card className="card" variant="ghost" style={{ padding: "2rem" }}>
+      <Box className="card"  style={{ padding: "2rem" }}>
         <Flex direction="column" gap="4" align="center">
           <Text size="6" weight="bold">
             Bienvenido a Asistec
@@ -37,7 +37,7 @@ export function Home() {
             </Button>
           </Flex>
         </Flex>
-      </Card>
+      </Box>
     </Flex>
   );
 }
