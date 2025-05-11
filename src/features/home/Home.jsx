@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Text } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { useNavigate } from "react-router";
-import "./App.css";
+import "@src/App.css";
 
 export function Home() {
   const navigate = useNavigate();

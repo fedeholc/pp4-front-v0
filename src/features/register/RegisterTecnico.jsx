@@ -4,19 +4,16 @@ import {
   Button,
   Callout,
   Card,
-  Container,
   Flex,
   Text,
   TextField,
 } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { useState } from "react";
-import * as api from "./api";
-import "./App.css";
-import { useNavigate } from "react-router";
+import * as api from "../../api";
+import "@src/App.css";
 
-export function RegisterCliente() {
-  const navigate = useNavigate();
+export function RegisterTecnico() {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -24,6 +21,7 @@ export function RegisterCliente() {
     apellido: "",
     telefono: "",
     direccion: "",
+    caracteristicas: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,21 +37,22 @@ export function RegisterCliente() {
     setError("");
     setSuccess(false);
     try {
-      // 1. Registrar usuario (rol: cliente)
+      // 1. Registrar usuario (rol: tecnico)
       const user = await api.register({
         email: form.email,
         password: form.password,
-        rol: "cliente",
+        rol: "tecnico",
       });
       if (!user?.id) throw new Error("Error al registrar usuario");
-      // 2. Crear cliente
-      await api.createCliente(
+      // 2. Crear técnico
+      await api.createTecnico(
         {
           usuarioId: user.id,
           nombre: form.nombre,
           apellido: form.apellido,
           telefono: form.telefono,
           direccion: form.direccion,
+          caracteristicas: form.caracteristicas,
           fechaRegistro: new Date(),
         },
         user.token
@@ -71,11 +70,11 @@ export function RegisterCliente() {
       direction="column"
       align="center"
       justify="center"
-      style={{ minHeight: "60vh" }}
+      style={{ paddingBottom: "2rem" }}
     >
       <Box p="5">
         <Text size="6" weight="bold">
-          Registro como Cliente
+          Registro como Técnico
         </Text>
       </Box>
       <Card
@@ -129,7 +128,7 @@ export function RegisterCliente() {
               onChange={handleChange}
               required
               size="3"
-            ></TextField.Root>
+            />
             <Label htmlFor="telefono">Teléfono</Label>
             <TextField.Root
               size="3"
@@ -150,39 +149,28 @@ export function RegisterCliente() {
               onChange={handleChange}
               required
             />
-            <Button
-              type="submit"
-              style={{ marginTop: "1rem" }}
+            <Label htmlFor="caracteristicas">Características</Label>
+            <TextField.Root
               size="3"
-              loading={loading}
-              disabled={loading}
-            >
+              id="caracteristicas"
+              name="caracteristicas"
+              placeholder="Características"
+              value={form.caracteristicas}
+              onChange={handleChange}
+              required
+            />
+            <Button type="submit" size="3" loading={loading} disabled={loading}>
               Registrarse
             </Button>
+            {error && <Callout.Root color="red">{error}</Callout.Root>}
+            {success && (
+              <Callout.Root color="green">
+                Registro exitoso. Ya puedes iniciar sesión.
+              </Callout.Root>
+            )}
           </Flex>
         </form>
       </Card>
-      {error && <Callout.Root color="red">{error}</Callout.Root>}
-      {success && (
-        <Flex
-          direction={"column"}
-          gap="4"
-          align="center"
-          style={{ marginTop: "1rem" }}
-        >
-          <Callout.Root color="green">
-            Registro exitoso. Ya puedes iniciar sesión.
-          </Callout.Root>
-          <Button
-            className="button"
-            size="3"
-            variant="outline"
-            onClick={() => navigate("/login")}
-          >
-            Iniciar Sesión
-          </Button>
-        </Flex>
-      )}
     </Flex>
   );
 }

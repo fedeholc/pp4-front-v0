@@ -1,7 +1,7 @@
 import { Flex, Text, Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 
-export function MenuPrincipal({ user, onLogout }) {
+export function Menu({ user, onLogout }) {
   return (
     <Flex
       direction="column"

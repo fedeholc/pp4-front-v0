@@ -4,16 +4,19 @@ import {
   Button,
   Callout,
   Card,
+  Container,
   Flex,
   Text,
   TextField,
 } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { useState } from "react";
-import * as api from "./api";
-import "./App.css";
+import * as api from "../../api";
+import "@src/App.css";
+import { useNavigate } from "react-router";
 
-export function RegisterTecnico() {
+export function RegisterCliente() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -21,7 +24,6 @@ export function RegisterTecnico() {
     apellido: "",
     telefono: "",
     direccion: "",
-    caracteristicas: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,22 +39,21 @@ export function RegisterTecnico() {
     setError("");
     setSuccess(false);
     try {
-      // 1. Registrar usuario (rol: tecnico)
+      // 1. Registrar usuario (rol: cliente)
       const user = await api.register({
         email: form.email,
         password: form.password,
-        rol: "tecnico",
+        rol: "cliente",
       });
       if (!user?.id) throw new Error("Error al registrar usuario");
-      // 2. Crear técnico
-      await api.createTecnico(
+      // 2. Crear cliente
+      await api.createCliente(
         {
           usuarioId: user.id,
           nombre: form.nombre,
           apellido: form.apellido,
           telefono: form.telefono,
           direccion: form.direccion,
-          caracteristicas: form.caracteristicas,
           fechaRegistro: new Date(),
         },
         user.token
@@ -70,20 +71,19 @@ export function RegisterTecnico() {
       direction="column"
       align="center"
       justify="center"
-      style={{ minHeight: "60vh" }}
+      style={{ paddingBottom: "2rem" }}
     >
       <Box p="5">
         <Text size="6" weight="bold">
-          Registro como Técnico
+          Registro como Cliente
         </Text>
       </Box>
       <Card
         variant="ghost"
+        className="card"
         style={{
           padding: "2rem",
           margin: "0",
-          boxShadow: "var(--shadow-3)",
-          outline: "1px solid var(--accent-8)",
         }}
       >
         <form onSubmit={handleSubmit}>
@@ -129,7 +129,7 @@ export function RegisterTecnico() {
               onChange={handleChange}
               required
               size="3"
-            />
+            ></TextField.Root>
             <Label htmlFor="telefono">Teléfono</Label>
             <TextField.Root
               size="3"
@@ -150,28 +150,39 @@ export function RegisterTecnico() {
               onChange={handleChange}
               required
             />
-            <Label htmlFor="caracteristicas">Características</Label>
-            <TextField.Root
+            <Button
+              type="submit"
+              style={{ marginTop: "1rem" }}
               size="3"
-              id="caracteristicas"
-              name="caracteristicas"
-              placeholder="Características"
-              value={form.caracteristicas}
-              onChange={handleChange}
-              required
-            />
-            <Button type="submit" size="3" loading={loading} disabled={loading}>
+              loading={loading}
+              disabled={loading}
+            >
               Registrarse
             </Button>
-            {error && <Callout.Root color="red">{error}</Callout.Root>}
-            {success && (
-              <Callout.Root color="green">
-                Registro exitoso. Ya puedes iniciar sesión.
-              </Callout.Root>
-            )}
           </Flex>
         </form>
       </Card>
+      {error && <Callout.Root color="red">{error}</Callout.Root>}
+      {success && (
+        <Flex
+          direction={"column"}
+          gap="4"
+          align="center"
+          style={{ marginTop: "1rem" }}
+        >
+          <Callout.Root color="green">
+            Registro exitoso. Ya puedes iniciar sesión.
+          </Callout.Root>
+          <Button
+            className="button"
+            size="3"
+            variant="outline"
+            onClick={() => navigate("/login")}
+          >
+            Iniciar Sesión
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 }
