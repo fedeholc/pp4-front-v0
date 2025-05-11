@@ -9,6 +9,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { MenuPrincipal } from "./MenuPrincipal";
 import * as api from "./api";
+import {
+  Box,
+  Card,
+  TextField,
+  Button as RadixButton,
+  Callout,
+} from "@radix-ui/themes";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -78,7 +85,7 @@ function LoginScreen({ onLogin }) {
       } else {
         setError("Credenciales inválidas");
       }
-    } catch (err) {
+    } catch {
       setError("Error de conexión o credenciales inválidas");
     } finally {
       setLoading(false);
@@ -92,47 +99,54 @@ function LoginScreen({ onLogin }) {
       justify="center"
       style={{ minHeight: "60vh" }}
     >
-      <form onSubmit={handleSubmit} style={{ minWidth: 300 }}>
-        <Text size="5" weight="bold">
+      <Box p="5">
+        <Text size="6" weight="bold">
           Iniciar sesión
         </Text>
-        <div style={{ margin: "16px 0" }}>
-          <label>
-            Email
-            <br />
-            <input
+      </Box>
+      <Card
+        variant="ghost"
+        style={{
+          padding: "2rem",
+          margin: "0",
+          boxShadow: "var(--shadow-3)",
+          outline: "1px solid var(--accent-8)",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column" gap="3">
+            <label htmlFor="email">Email</label>
+            <TextField.Root
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ width: "100%" }}
+              size="3"
+              placeholder="Email"
             />
-          </label>
-        </div>
-        <div style={{ margin: "16px 0" }}>
-          <label>
-            Contraseña
-            <br />
-            <input
+            <label htmlFor="password">Contraseña</label>
+            <TextField.Root
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ width: "100%" }}
+              size="3"
+              placeholder="Contraseña"
             />
-          </label>
-        </div>
-        {error && (
-          <Text color="red" size="3">
-            {error}
-          </Text>
-        )}
-        <div style={{ marginTop: 16 }}>
-          <button type="submit" disabled={loading} style={{ width: "100%" }}>
-            {loading ? "Ingresando..." : "Ingresar"}
-          </button>
-        </div>
-      </form>
+            <RadixButton
+              type="submit"
+              size="3"
+              loading={loading}
+              disabled={loading}
+            >
+              Ingresar
+            </RadixButton>
+            {error && <Callout.Root color="red">{error}</Callout.Root>}
+          </Flex>
+        </form>
+      </Card>
     </Flex>
   );
 }
