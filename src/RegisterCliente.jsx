@@ -1,5 +1,14 @@
 import { Label } from "@radix-ui/react-label";
-import { Box, Button, Callout, Flex, Text, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Callout,
+  Card,
+  Container,
+  Flex,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { useState } from "react";
 import * as api from "./api";
@@ -61,10 +70,20 @@ export function RegisterCliente() {
       justify="center"
       style={{ minHeight: "60vh" }}
     >
-      <Box width="350px">
-        <Text size="6" weight="bold" mb="4">
+      <Box p="5">
+        <Text size="6" weight="bold">
           Registro como Cliente
         </Text>
+      </Box>
+      <Card
+        variant="ghost"
+        style={{
+          padding: "2rem",
+          margin: "0",
+          boxShadow: "var(--shadow-3)",
+          outline: "1px solid var(--accent-8)",
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <Flex direction="column" gap="3">
             <Label htmlFor="email">Email</Label>
@@ -78,7 +97,6 @@ export function RegisterCliente() {
               required
               size="3"
             />
-
             <Label htmlFor="password">Contraseña</Label>
             <TextField.Root
               id="password"
@@ -90,7 +108,6 @@ export function RegisterCliente() {
               required
               size="3"
             />
-
             <Label htmlFor="nombre">Nombre</Label>
             <TextField.Root
               id="nombre"
@@ -101,9 +118,7 @@ export function RegisterCliente() {
               required
               size="3"
             />
-
             <Label htmlFor="apellido">Apellido</Label>
-
             <TextField.Root
               id="apellido"
               name="apellido"
@@ -113,7 +128,6 @@ export function RegisterCliente() {
               required
               size="3"
             ></TextField.Root>
-
             <Label htmlFor="telefono">Teléfono</Label>
             <TextField.Root
               size="3"
@@ -124,7 +138,6 @@ export function RegisterCliente() {
               onChange={handleChange}
               required
             />
-
             <Label htmlFor="direccion">Dirección</Label>
             <TextField.Root
               size="3"
@@ -135,7 +148,6 @@ export function RegisterCliente() {
               onChange={handleChange}
               required
             />
-
             <Button type="submit" size="3" loading={loading} disabled={loading}>
               Registrarse
             </Button>
@@ -147,7 +159,7 @@ export function RegisterCliente() {
             )}
           </Flex>
         </form>
-      </Box>
+      </Card>
     </Flex>
   );
 }

@@ -7,7 +7,7 @@ import { RegisterCliente } from "./RegisterCliente";
 
 function App() {
   return (
-    <Theme accentColor="grass" grayColor="gray" radius="full">
+    <Theme accentColor="grass" grayColor="gray" radius="large">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
