@@ -12,8 +12,11 @@ import "@radix-ui/themes/styles.css";
 import { useState } from "react";
 import * as api from "../../api";
 import "@src/App.css";
+import { Layout } from "../../components/Layout";
+import { useNavigate } from "react-router";
 
 export function RegisterTecnico() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -66,110 +69,134 @@ export function RegisterTecnico() {
   };
 
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      style={{ paddingBottom: "2rem" }}
-    >
-      <Box p="5">
-        <Text size="6" weight="bold">
-          Registro como Técnico
-        </Text>
-      </Box>
-      <Box
-        className="card"
-        style={{
-          padding: "2rem",
-          margin: "0",
-        }}
+    <Layout>
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap="3"
+        style={{ padding: "1rem 0.5rem 2rem 0.5rem", height: "100%" }}
       >
-        <form onSubmit={handleSubmit}>
-          <Flex direction="column" gap="3">
-            <Label htmlFor="email">Email</Label>
-            <TextField.Root
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              required
+        <Box p="1">
+          <Text size="6" weight="bold">
+            Registro como Técnico
+          </Text>
+        </Box>
+        <Box
+          className="card"
+          style={{
+            padding: "2rem",
+            margin: "0",
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Flex direction="column" gap="3">
+              <Label htmlFor="email">Email</Label>
+              <TextField.Root
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="password">Contraseña</Label>
+              <TextField.Root
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Contraseña"
+                value={form.password}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="nombre">Nombre</Label>
+              <TextField.Root
+                id="nombre"
+                name="nombre"
+                placeholder="Nombre"
+                value={form.nombre}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="apellido">Apellido</Label>
+              <TextField.Root
+                id="apellido"
+                name="apellido"
+                placeholder="Apellido"
+                value={form.apellido}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="telefono">Teléfono</Label>
+              <TextField.Root
+                size="3"
+                id="telefono"
+                name="telefono"
+                placeholder="Teléfono"
+                value={form.telefono}
+                onChange={handleChange}
+                required
+              />
+              <Label htmlFor="direccion">Dirección</Label>
+              <TextField.Root
+                size="3"
+                id="direccion"
+                name="direccion"
+                placeholder="Dirección"
+                value={form.direccion}
+                onChange={handleChange}
+                required
+              />
+              <Label htmlFor="caracteristicas">Características</Label>
+              <TextField.Root
+                size="3"
+                id="caracteristicas"
+                name="caracteristicas"
+                placeholder="Características"
+                value={form.caracteristicas}
+                onChange={handleChange}
+                required
+              />
+              <Button
+                style={{ marginTop: "1rem" }}
+                type="submit"
+                size="3"
+                loading={loading}
+                disabled={loading}
+              >
+                Registrarse
+              </Button>
+            </Flex>
+          </form>
+        </Box>
+        {error && <Callout.Root color="red">{error}</Callout.Root>}
+        {success && (
+          <Flex
+            direction={"column"}
+            gap="4"
+            align="center"
+            style={{ marginTop: "1rem" }}
+          >
+            <Callout.Root color="green">
+              Registro exitoso. Ya puedes iniciar sesión.
+            </Callout.Root>
+            <Button
+              className="button"
               size="3"
-            />
-            <Label htmlFor="password">Contraseña</Label>
-            <TextField.Root
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              value={form.password}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="nombre">Nombre</Label>
-            <TextField.Root
-              id="nombre"
-              name="nombre"
-              placeholder="Nombre"
-              value={form.nombre}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="apellido">Apellido</Label>
-            <TextField.Root
-              id="apellido"
-              name="apellido"
-              placeholder="Apellido"
-              value={form.apellido}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="telefono">Teléfono</Label>
-            <TextField.Root
-              size="3"
-              id="telefono"
-              name="telefono"
-              placeholder="Teléfono"
-              value={form.telefono}
-              onChange={handleChange}
-              required
-            />
-            <Label htmlFor="direccion">Dirección</Label>
-            <TextField.Root
-              size="3"
-              id="direccion"
-              name="direccion"
-              placeholder="Dirección"
-              value={form.direccion}
-              onChange={handleChange}
-              required
-            />
-            <Label htmlFor="caracteristicas">Características</Label>
-            <TextField.Root
-              size="3"
-              id="caracteristicas"
-              name="caracteristicas"
-              placeholder="Características"
-              value={form.caracteristicas}
-              onChange={handleChange}
-              required
-            />
-            <Button type="submit" size="3" loading={loading} disabled={loading}>
-              Registrarse
+              variant="outline"
+              onClick={() => navigate("/login")}
+            >
+              Iniciar Sesión
             </Button>
-            {error && <Callout.Root color="red">{error}</Callout.Root>}
-            {success && (
-              <Callout.Root color="green">
-                Registro exitoso. Ya puedes iniciar sesión.
-              </Callout.Root>
-            )}
           </Flex>
-        </form>
-      </Box>
-    </Flex>
+        )}
+      </Flex>
+    </Layout>
   );
 }

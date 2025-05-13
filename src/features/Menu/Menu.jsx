@@ -13,8 +13,8 @@ export function Menu() {
         direction="column"
         align="center"
         justify="center"
-        style={{ minHeight: "60vh" }}
-        gap="4"
+        style={{ padding: "1rem 0.5rem 2rem 0.5rem", height: "100%" }}
+        gap="3"
       >
         <Box className="card" style={{ padding: "2rem" }}>
           <Flex direction="column" align="center" justify="center" gap="4">

@@ -14,6 +14,7 @@ import { useState } from "react";
 import * as api from "../../api";
 import "@src/App.css";
 import { useNavigate } from "react-router";
+import { Layout } from "../../components/Layout";
 
 export function RegisterCliente() {
   const navigate = useNavigate();
@@ -67,121 +68,124 @@ export function RegisterCliente() {
   };
 
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      style={{ paddingBottom: "2rem" }}
-    >
-      <Box p="5">
-        <Text size="6" weight="bold">
-          Registro como Cliente
-        </Text>
-      </Box>
-      <Box
-        className="card"
-        style={{
-          padding: "2rem",
-          margin: "0",
-        }}
+    <Layout>
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap="3"
+        style={{ padding: "1rem 0.5rem 2rem 0.5rem", height: "100%" }}
       >
-        <form onSubmit={handleSubmit}>
-          <Flex direction="column" gap="3">
-            <Label htmlFor="email">Email</Label>
-            <TextField.Root
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="password">Contraseña</Label>
-            <TextField.Root
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              value={form.password}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="nombre">Nombre</Label>
-            <TextField.Root
-              id="nombre"
-              name="nombre"
-              placeholder="Nombre"
-              value={form.nombre}
-              onChange={handleChange}
-              required
-              size="3"
-            />
-            <Label htmlFor="apellido">Apellido</Label>
-            <TextField.Root
-              id="apellido"
-              name="apellido"
-              placeholder="Apellido"
-              value={form.apellido}
-              onChange={handleChange}
-              required
-              size="3"
-            ></TextField.Root>
-            <Label htmlFor="telefono">Teléfono</Label>
-            <TextField.Root
-              size="3"
-              id="telefono"
-              name="telefono"
-              placeholder="Teléfono"
-              value={form.telefono}
-              onChange={handleChange}
-              required
-            />
-            <Label htmlFor="direccion">Dirección</Label>
-            <TextField.Root
-              size="3"
-              id="direccion"
-              name="direccion"
-              placeholder="Dirección"
-              value={form.direccion}
-              onChange={handleChange}
-              required
-            />
+        <Box p="1">
+          <Text size="6" weight="bold">
+            Registro como Cliente
+          </Text>
+        </Box>
+        <Box
+          className="card"
+          style={{
+            padding: "2rem",
+            margin: "0",
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Flex direction="column" gap="3">
+              <Label htmlFor="email">Email</Label>
+              <TextField.Root
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="password">Contraseña</Label>
+              <TextField.Root
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Contraseña"
+                value={form.password}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="nombre">Nombre</Label>
+              <TextField.Root
+                id="nombre"
+                name="nombre"
+                placeholder="Nombre"
+                value={form.nombre}
+                onChange={handleChange}
+                required
+                size="3"
+              />
+              <Label htmlFor="apellido">Apellido</Label>
+              <TextField.Root
+                id="apellido"
+                name="apellido"
+                placeholder="Apellido"
+                value={form.apellido}
+                onChange={handleChange}
+                required
+                size="3"
+              ></TextField.Root>
+              <Label htmlFor="telefono">Teléfono</Label>
+              <TextField.Root
+                size="3"
+                id="telefono"
+                name="telefono"
+                placeholder="Teléfono"
+                value={form.telefono}
+                onChange={handleChange}
+                required
+              />
+              <Label htmlFor="direccion">Dirección</Label>
+              <TextField.Root
+                size="3"
+                id="direccion"
+                name="direccion"
+                placeholder="Dirección"
+                value={form.direccion}
+                onChange={handleChange}
+                required
+              />
+              <Button
+                type="submit"
+                style={{ marginTop: "1rem" }}
+                size="3"
+                loading={loading}
+                disabled={loading}
+              >
+                Registrarse
+              </Button>
+            </Flex>
+          </form>
+        </Box>
+        {error && <Callout.Root color="red">{error}</Callout.Root>}
+        {success && (
+          <Flex
+            direction={"column"}
+            gap="4"
+            align="center"
+            style={{ marginTop: "1rem" }}
+          >
+            <Callout.Root color="green">
+              Registro exitoso. Ya puedes iniciar sesión.
+            </Callout.Root>
             <Button
-              type="submit"
-              style={{ marginTop: "1rem" }}
+              className="button"
               size="3"
-              loading={loading}
-              disabled={loading}
+              variant="outline"
+              onClick={() => navigate("/login")}
             >
-              Registrarse
+              Iniciar Sesión
             </Button>
           </Flex>
-        </form>
-      </Box>
-      {error && <Callout.Root color="red">{error}</Callout.Root>}
-      {success && (
-        <Flex
-          direction={"column"}
-          gap="4"
-          align="center"
-          style={{ marginTop: "1rem" }}
-        >
-          <Callout.Root color="green">
-            Registro exitoso. Ya puedes iniciar sesión.
-          </Callout.Root>
-          <Button
-            className="button"
-            size="3"
-            variant="outline"
-            onClick={() => navigate("/login")}
-          >
-            Iniciar Sesión
-          </Button>
-        </Flex>
-      )}
-    </Flex>
+        )}
+      </Flex>
+    </Layout>
   );
 }

@@ -14,7 +14,6 @@
 }
 
 .nav {
-  margin-bottom: 2rem;
   /*   background-color: #e8ff001c; */
   text-align: center;
   color: var(--accent-12);
@@ -23,7 +22,6 @@
 
   .rt-BaseTabList {
     box-shadow: inset 0 -1px 0 0 #afb9a8;
-
   }
 }
 
