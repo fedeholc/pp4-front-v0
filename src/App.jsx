@@ -9,6 +9,7 @@ import { Menu } from "./features/Menu/Menu";
 import { RegisterCliente } from "./features/register/RegisterCliente";
 import { RegisterTecnico } from "./features/register/RegisterTecnico";
 import { ProtectedRoute } from "./features/ProtectedRoute";
+import { Navigate } from "react-router";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           />
           <Route path="/register/cliente" element={<RegisterCliente />} />
           <Route path="/register/tecnico" element={<RegisterTecnico />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </Theme>
