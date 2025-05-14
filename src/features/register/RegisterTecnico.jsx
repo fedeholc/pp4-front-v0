@@ -9,11 +9,12 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as api from "../../api";
 import "@src/App.css";
 import { Layout } from "../../components/Layout";
 import { useNavigate } from "react-router";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export function RegisterTecnico() {
   const navigate = useNavigate();
@@ -29,9 +30,26 @@ export function RegisterTecnico() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [areas, setAreas] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState([]);
+
+  //TODO: no me convence el componente de selección multiple, ver si hay otro mejor o hacer uno propio
+  
+  useEffect(() => {
+    // Obtener áreas al montar
+    api
+      .getAreas()
+      .then(setAreas)
+      .catch(() => setAreas([]));
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleAreasChange = (e) => {
+    const options = Array.from(e.target.selectedOptions);
+    setSelectedAreas(options.map((opt) => Number(opt.value)));
   };
 
   const handleSubmit = async (e) => {
@@ -48,7 +66,7 @@ export function RegisterTecnico() {
       });
       if (!user?.id) throw new Error("Error al registrar usuario");
       // 2. Crear técnico
-      await api.createTecnico(
+      const tecnico = await api.createTecnico(
         {
           usuarioId: user.id,
           nombre: form.nombre,
@@ -59,6 +77,12 @@ export function RegisterTecnico() {
           fechaRegistro: new Date(),
         },
         user.token
+      );
+      // 3. Asignar áreas seleccionadas
+      await Promise.all(
+        selectedAreas.map((areaId) =>
+          api.createTecnicoArea({ tecnicoId: tecnico.id, areaId }, user.token)
+        )
       );
       setSuccess(true);
     } catch (err) {
@@ -163,6 +187,66 @@ export function RegisterTecnico() {
                 onChange={handleChange}
                 required
               />
+              <Label htmlFor="areas">Áreas de especialidad</Label>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <Button
+                    variant="soft"
+                    type="button"
+                    style={{ textAlign: "left", minHeight: 40 }}
+                  >
+                    Seleccionar áreas
+                  </Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content
+                  sideOffset={5}
+                  align="start"
+                  style={{
+                    minWidth: 220,
+                    maxHeight: 250,
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                    background: "white",
+                    borderRadius: 8,
+                    padding: "1rem",
+                    border: "1px solid #ccc",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+                  }}
+                >
+                  {areas.map((area) => (
+                    <DropdownMenu.Item
+                      key={area.id}
+                      asChild
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          padding: 6,
+                          cursor: "pointer",
+                          width: "100%",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedAreas.includes(area.id)}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onChange={() => {
+                            setSelectedAreas((prev) =>
+                              prev.includes(area.id)
+                                ? prev.filter((id) => id !== area.id)
+                                : [...prev, area.id]
+                            );
+                          }}
+                        />
+                        {area.nombre}
+                      </label>
+                    </DropdownMenu.Item>
+                  ))}
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
               <Button
                 style={{ marginTop: "1rem" }}
                 type="submit"

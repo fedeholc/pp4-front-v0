@@ -29,13 +29,9 @@ function getHeaders(token, isJson = true) {
 // --- ÁREAS ---
 /**
  * Obtener todas las áreas
- * @param {string} token
  * @returns {Promise<Area[]>}
  */
-export const getAreas = (token) =>
-  fetch(`${API_URL}/areas`, { headers: getHeaders(token) }).then((r) =>
-    r.json()
-  );
+export const getAreas = () => fetch(`${API_URL}/areas`).then((r) => r.json());
 
 /**
  * Obtener un área por ID
