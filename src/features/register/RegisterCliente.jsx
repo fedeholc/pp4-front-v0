@@ -1,20 +1,18 @@
-import { Label } from "@radix-ui/react-label";
-import {
-  Box,
-  Button,
-  Callout,
-  Card,
-  Container,
-  Flex,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import FormLabel from "@mui/material/FormLabel";
+import { useNavigate } from "react-router";
 import * as api from "../../api";
 import "@src/App.css";
-import { useNavigate } from "react-router";
 import { Layout } from "../../components/Layout";
+import { Paper } from "@mui/material";
 
 export function RegisterCliente() {
   const navigate = useNavigate();
@@ -40,14 +38,12 @@ export function RegisterCliente() {
     setError("");
     setSuccess(false);
     try {
-      // 1. Registrar usuario (rol: cliente)
       const user = await api.register({
         email: form.email,
         password: form.password,
         rol: "cliente",
       });
       if (!user?.id) throw new Error("Error al registrar usuario");
-      // 2. Crear cliente
       await api.createCliente(
         {
           usuarioId: user.id,
@@ -69,123 +65,123 @@ export function RegisterCliente() {
 
   return (
     <Layout>
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        gap="3"
-        style={{ padding: "1rem 0.5rem 2rem 0.5rem", height: "100%" }}
-      >
-        <Box p="1">
-          <Text size="6" weight="bold">
-            Registro como Cliente
-          </Text>
-        </Box>
-        <Box
-          className="card"
-          style={{
-            padding: "2rem",
-            margin: "0",
-          }}
+      <Container maxWidth="sm" sx={{ height: "100%" }}>
+        <Stack
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          spacing={3}
+          sx={{ padding: "1rem 2rem 2rem 2rem", height: "100%" }}
         >
-          <form onSubmit={handleSubmit}>
-            <Flex direction="column" gap="3">
-              <Label htmlFor="email">Email</Label>
-              <TextField.Root
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                required
-                size="3"
-              />
-              <Label htmlFor="password">Contraseña</Label>
-              <TextField.Root
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                value={form.password}
-                onChange={handleChange}
-                required
-                size="3"
-              />
-              <Label htmlFor="nombre">Nombre</Label>
-              <TextField.Root
-                id="nombre"
-                name="nombre"
-                placeholder="Nombre"
-                value={form.nombre}
-                onChange={handleChange}
-                required
-                size="3"
-              />
-              <Label htmlFor="apellido">Apellido</Label>
-              <TextField.Root
-                id="apellido"
-                name="apellido"
-                placeholder="Apellido"
-                value={form.apellido}
-                onChange={handleChange}
-                required
-                size="3"
-              ></TextField.Root>
-              <Label htmlFor="telefono">Teléfono</Label>
-              <TextField.Root
-                size="3"
-                id="telefono"
-                name="telefono"
-                placeholder="Teléfono"
-                value={form.telefono}
-                onChange={handleChange}
-                required
-              />
-              <Label htmlFor="direccion">Dirección</Label>
-              <TextField.Root
-                size="3"
-                id="direccion"
-                name="direccion"
-                placeholder="Dirección"
-                value={form.direccion}
-                onChange={handleChange}
-                required
-              />
-              <Button
-                type="submit"
-                style={{ marginTop: "1rem" }}
-                size="3"
-                loading={loading}
-                disabled={loading}
-              >
-                Registrarse
-              </Button>
-            </Flex>
-          </form>
-        </Box>
-        {error && <Callout.Root color="red">{error}</Callout.Root>}
-        {success && (
-          <Flex
-            direction={"column"}
-            gap="4"
-            align="center"
-            style={{ marginTop: "1rem" }}
+          <Box p={1}>
+            <Typography variant="h4" fontWeight="bold">
+              Registro como Cliente
+            </Typography>
+          </Box>
+          <Paper
+            className="gradientBackground"
+            variant="outlined"
+            sx={{ padding: "2rem", margin: 0, width: "100%" }}
           >
-            <Callout.Root color="green">
-              Registro exitoso. Ya puedes iniciar sesión.
-            </Callout.Root>
-            <Button
-              className="button"
-              size="3"
-              variant="outline"
-              onClick={() => navigate("/login")}
+            <form onSubmit={handleSubmit}>
+              <Stack direction="column" spacing={3}>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <TextField
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <FormLabel htmlFor="password">Contraseña</FormLabel>
+                <TextField
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Contraseña"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                <TextField
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <FormLabel htmlFor="apellido">Apellido</FormLabel>
+                <TextField
+                  id="apellido"
+                  name="apellido"
+                  placeholder="Apellido"
+                  value={form.apellido}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                <TextField
+                  id="telefono"
+                  name="telefono"
+                  placeholder="Teléfono"
+                  value={form.telefono}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <FormLabel htmlFor="direccion">Dirección</FormLabel>
+                <TextField
+                  id="direccion"
+                  name="direccion"
+                  placeholder="Dirección"
+                  value={form.direccion}
+                  onChange={handleChange}
+                  required
+                  size="medium"
+                />
+                <Button
+                  type="submit"
+                  sx={{ marginTop: "1rem" }}
+                  size="large"
+                  variant="contained"
+                  disabled={loading}
+                >
+                  Registrarme
+                </Button>
+              </Stack>
+            </form>
+          </Paper>
+          {error && <Alert severity="error">{error}</Alert>}
+          {success && (
+            <Stack
+              direction="column"
+              spacing={4}
+              alignItems="center"
+              sx={{ marginTop: "1rem" }}
             >
-              Iniciar Sesión
-            </Button>
-          </Flex>
-        )}
-      </Flex>
+              <Alert severity="success">
+                Registro exitoso. Ya puedes iniciar sesión.
+              </Alert>
+              <Button
+                className="button"
+                size="large"
+                variant="outlined"
+                onClick={() => navigate("/login")}
+              >
+                Iniciar Sesión
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+      </Container>
     </Layout>
   );
 }

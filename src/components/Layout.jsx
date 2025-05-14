@@ -1,82 +1,32 @@
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import {
-  Container,
-  DropdownMenu,
-  IconButton,
-  Link,
-  TabNav,
-  Text,
-} from "@radix-ui/themes";
-import { useContext } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import "./Layout.css";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import { Handyman } from "@mui/icons-material";
+
 export function Layout({ children }) {
   return (
     <div className="layout">
-      <Navbar />
+      {/*  <Navbar /> */}
+      <ResponsiveAppBar></ResponsiveAppBar>
       <main className="main">{children}</main>
       <Footer />
     </div>
-  );
-}
-
-function Navbar() {
-  const navigate = useNavigate();
-  const pathname = window.location.pathname;
-  const { logout, user } = useContext(UserContext);
-
-  function HamburgerMenu() {
-    return (
-      <div className="hamburger">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <IconButton size="2" variant="soft">
-              <HamburgerMenuIcon width="15" height="15" />
-            </IconButton>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content align="end" variant="soft" color="indigo">
-            <DropdownMenu.Item onClick={() => navigate("/")}>
-              Inicio
-            </DropdownMenu.Item>
-
-            <DropdownMenu.Separator />
-            <DropdownMenu.Item
-              onClick={() => {
-                logout();
-                navigate("/login");
-              }}
-            >
-              Cerrar Sesión
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </div>
-    );
-  }
-  return (
-    <nav className="nav">
-      {" "}
-      <Container
-        className="container"
-        style={{ padding: "0", marginTop: "0.5rem" }}
-      >
-        <div className="nav-row">
-          <TabNav.Root size="2">
-            <TabNav.Link asChild active={pathname === "/"}>
-              <Link href="/">Inicio</Link>
-            </TabNav.Link>
-            {user && (
-              <TabNav.Link asChild active={pathname === "/menu"}>
-                <Link href="/menu">Menú Principal</Link>
-              </TabNav.Link>
-            )}
-          </TabNav.Root>
-
-          {user && <HamburgerMenu />}
-        </div>
-      </Container>
-    </nav>
   );
 }
 
@@ -84,8 +34,171 @@ function Footer() {
   return (
     <footer className="footer">
       <Container className="container">
-        <Text size="2">Asistec 2025</Text>
+        <Typography variant="body2">Asistec 2025</Typography>
       </Container>
     </footer>
   );
 }
+
+function ResponsiveAppBar() {
+  const pages = ["Registrarme", "Login", "Menu Principal"];
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
+  const { logout } = useContext(UserContext);
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  function handlePageMenuOption(page) {
+    if (page === "Registrarme") navigate("/");
+    if (page === "Login") navigate("/login");
+    if (page === "Menú Principal") navigate("/menu");
+  }
+
+  function handleSettingsMenuOption(clickedOption) {
+    if (clickedOption === "Logout") {
+      logout();
+      navigate("/");
+    }
+  }
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  return (
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Handyman sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            ASISTEC
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: "block", md: "none" } }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={() => handlePageMenuOption(page)}>
+                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Handyman sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            ASISTEC
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={() => handlePageMenuOption(page)}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleSettingsMenuOption(setting)}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    {setting}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+}
+export default ResponsiveAppBar;

@@ -1,19 +1,17 @@
-import {
-  Box,
-  Button,
-  Callout,
-  Card,
-  Flex,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import { useContext, useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router";
-import "@src/App.css";
 import * as api from "../../api";
 import { UserContext } from "../../contexts/UserContext";
+import "@src/App.css";
 import { Layout } from "../../components/Layout";
+import { Paper } from "@mui/material";
 
 export function Login() {
   const { login } = useContext(UserContext);
@@ -44,62 +42,56 @@ export function Login() {
 
   return (
     <Layout>
-      <Flex
+      <Stack
         direction="column"
-        align="center"
-        justify="center"
-        gap="3"
-        style={{ height: "100%" }}
+        alignItems="center"
+        justifyContent="center"
+        spacing={3}
+        sx={{ height: "100%" }}
       >
-        <Box p="1">
-          <Text size="6" weight="bold">
+        <Box p={1}>
+          <Typography variant="h4" fontWeight="bold">
             Iniciar sesión
-          </Text>
+          </Typography>
         </Box>
-        <Box
-          className="card"
-          style={{
-            padding: "2rem",
-            margin: "0",
-          }}
-        >
+          <Paper className="gradientBackground" variant="outlined" sx={{ p: 4, }}>
           <form onSubmit={handleSubmit}>
-            <Flex direction="column" gap="3">
-              <label htmlFor="email">Email</label>
-              <TextField.Root
+            <Stack direction="column" spacing={3}>
+              <TextField
                 id="email"
+                label="Email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                size="3"
+                size="medium"
                 placeholder="Email"
               />
-              <label htmlFor="password">Contraseña</label>
-              <TextField.Root
+              <TextField
                 id="password"
+                label="Contraseña"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                size="3"
+                size="medium"
                 placeholder="Contraseña"
               />
               <Button
-                style={{ marginTop: "1rem" }}
+                sx={{ marginTop: "1rem" }}
                 className="button"
                 type="submit"
-                size="3"
-                loading={loading}
+                size="large"
+                variant="contained"
                 disabled={loading}
               >
                 Ingresar
               </Button>
-              {error && <Callout.Root color="red">{error}</Callout.Root>}
-            </Flex>
+              {error && <Alert severity="error">{error}</Alert>}
+            </Stack>
           </form>
-        </Box>
-      </Flex>
+        </Paper>
+      </Stack>
     </Layout>
   );
 }

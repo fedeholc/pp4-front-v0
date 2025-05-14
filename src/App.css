@@ -3,25 +3,6 @@ body {
   margin: 0;
 }
 
-.card {
-  
- 
-  /* background-color: #e8ff001c; */
-  box-shadow: var(--shadow-3);
-  outline: 1px solid var(--accent-8);
-  border-radius: var(--radius-3);
-
-  background: linear-gradient(345deg, #eaff0005, #eaff002a);
-}
-
-.button {
-  transition: all 0.2s ease;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
+.gradientBackground {
+  background: linear-gradient(345deg, #eaff0005, #eaff0010);
 }

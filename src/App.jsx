@@ -1,5 +1,3 @@
-import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
 import { UserProvider } from "./contexts/UserProvider";
@@ -10,10 +8,25 @@ import { RegisterCliente } from "./features/register/RegisterCliente";
 import { RegisterTecnico } from "./features/register/RegisterTecnico";
 import { ProtectedRoute } from "./features/ProtectedRoute";
 import { Navigate } from "react-router";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 function App() {
+  const themeOptions = {
+    cssVariables: true,
+    palette: {
+      mode: /** @type {'light'} */ ("light"),
+      primary: {
+        main: "#367100",
+      },
+      secondary: {
+        main: "#ffc107",
+      },
+    },
+  };
+  const theme = createTheme(themeOptions);
+
   return (
-    <Theme accentColor="grass" grayColor="gray" radius="large">
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,7 +44,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
-    </Theme>
+    </ThemeProvider>
   );
 }
 
