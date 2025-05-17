@@ -112,8 +112,7 @@ export const FacturaSchema = z.object({
   metodoPago: FacturaMetodoPagoEnum.nullable(),
 });
 
-export const UsuarioCompletoSchema = z.object({
-  usuario: UsuarioSchema,
+export const UsuarioCompletoSchema = UsuarioSchema.extend({
   cliente: ClienteSchema.optional().nullable(),
   tecnico: TecnicoSchema.optional().nullable(),
 });

@@ -19,6 +19,7 @@ import { Container, Paper } from "@mui/material";
 export function Menu() {
   const { user } = useContext(UserContext);
 
+  console.log("User in Menu:", user);
   function MenuCliente() {
     return (
       <Paper
@@ -139,7 +140,7 @@ export function Menu() {
           Menú Principal
         </Typography>
         <Typography variant="h6">
-          Bienvenido, {user?.nombre || user?.email || "Usuario"}
+          Bienvenido, {user?.email || "Usuario"}
         </Typography>
         <Typography variant="body1">Rol: {user?.rol || "-"}</Typography>
         {user?.rol === "cliente" && <MenuCliente />}
