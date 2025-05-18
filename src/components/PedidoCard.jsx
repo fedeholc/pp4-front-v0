@@ -85,13 +85,11 @@ export function PedidoCard({ pedido, displayButtons }) {
         { ...pedido, estado: PedidoEstadoEnum.enum.cancelado },
         token
       );
-      console.log("response", response);
       if (response) {
         setSuccess(true);
         setError(null);
       }
     } catch (error) {
-      console.error("Error al cancelar el pedido:", error);
       setCancelDisabled(false);
       setError("Error al cancelar el pedido. Inténtalo más tarde.");
     }
