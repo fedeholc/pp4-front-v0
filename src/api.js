@@ -234,13 +234,17 @@ export const deleteFactura = (id, token) =>
 /**
  * Obtener todos los pedidos
  * @param {string} token
+ * @param {Object} [searchParams] - Parámetros de búsqueda opcionales
  * @returns {Promise<Pedido[]>}
  */
-export const getPedidos = (token) =>
-  fetch(`${API_URL}/pedidos`, { headers: getHeaders(token) }).then((r) =>
-    r.json()
-  );
-
+export const getPedidos = (token, searchParams) => {
+  let url = `${API_URL}/pedidos`;
+  if (searchParams && Object.keys(searchParams).length > 0) {
+    const params = new URLSearchParams(searchParams);
+    url += `?${params.toString()}`;
+  }
+  return fetch(url, { headers: getHeaders(token) }).then((r) => r.json());
+};
 /**
  * Obtener un pedido por ID
  * @param {number} id

@@ -48,7 +48,7 @@ export function Menu() {
                   className="button"
                   size="large"
                   variant="contained"
-                  onClick={() => navigate("/pedido/nuevo")}
+                  onClick={() => navigate("/cliente/nuevo-pedido")}
                 >
                   Solicitar servicio técnico
                 </Button>
@@ -75,7 +75,12 @@ export function Menu() {
                 spacing={1}
               >
                 <FileMagnifyingGlass size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/cliente/pedidos")}
+                >
                   Ver historial de servicios
                 </Button>
               </Stack>
