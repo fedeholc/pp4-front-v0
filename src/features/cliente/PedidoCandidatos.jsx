@@ -1,27 +1,17 @@
 import {
-  CalendarMonth,
-  CheckCircle,
-  Comment,
-  Person,
-} from "@mui/icons-material";
-import {
   Alert,
   Box,
-  Button,
   Container,
-  Divider,
-  Paper,
-  Rating,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import * as api from "../../api";
-import { Layout } from "../../components/Layout";
-import { UserContext } from "../../contexts/UserContext";
-import { PedidoCard } from "../../components/PedidoCard";
 import { CandidatoCard } from "../../components/CandidatoCard";
+import { Layout } from "../../components/Layout";
+import { PedidoCard } from "../../components/PedidoCard";
+import { UserContext } from "../../contexts/UserContext";
 
 export function PedidoCandidatos() {
   const { token, user } = useContext(UserContext);
