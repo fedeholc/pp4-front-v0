@@ -13,11 +13,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 /**
  * @param {Object} props
  * @param {import("../../types").CandidatoVista} props.candidato
  */
 export function CandidatoCard({ candidato }) {
+  const navigate = useNavigate();
   let average =
     candidato.calificaciones.reduce(
       (acc, calificacion) => acc + calificacion,
@@ -105,6 +107,9 @@ export function CandidatoCard({ candidato }) {
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
             startIcon={<Person />}
+            onClick={() => {
+              navigate(`/tecnico/${candidato.id}/perfil`);
+            }}
           >
             VER PERFIL
           </Button>
