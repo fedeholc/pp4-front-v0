@@ -90,12 +90,13 @@ export function ListadoPedidos() {
           flexDirection={"row"}
           flexWrap={"wrap"}
           alignItems={"center"}
+          justifyContent={"end"}
           mt={2}
           mb={2}
           gap={1}
         >
           <Typography>Filtrar por estado del pedido:</Typography>
-          <FormControl size="small" sx={{ flexGrow: 1 }}>
+          <FormControl size="small" sx={{ flexGrow: 0 }}>
             <InputLabel id="estado-filtro-label">Estado</InputLabel>
             <Select
               labelId="estado-filtro-label"
@@ -168,7 +169,7 @@ function PedidoCard({ pedido }) {
         mb: 3,
         borderRadius: 4,
         background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
-        boxShadow: 3,
+        boxShadow: 1,
         border: "1px solid #e0e0e0",
         position: "relative",
         overflow: "hidden",
