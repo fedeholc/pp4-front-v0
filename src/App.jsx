@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { PedidoNuevo } from "./features/cliente/PedidoNuevo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ListadoPedidos } from "./features/cliente/ListadoPedidos";
 
 function App() {
   const themeOptions = {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/register/cliente" element={<RegisterCliente />} />
             <Route path="/register/tecnico" element={<RegisterTecnico />} />
             <Route path="/cliente/nuevo-pedido" element={<PedidoNuevo />} />
+            <Route path="/cliente/pedidos" element={<ListadoPedidos />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
