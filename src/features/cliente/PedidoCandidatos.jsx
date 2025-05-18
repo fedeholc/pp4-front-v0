@@ -33,15 +33,17 @@ import {
   ExpandMore,
   ExpandLess,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router";
+import { useParams } from "react-router";
 
-export function ListadoPedidos() {
+export function PedidoCandidatos() {
   const { token, user } = useContext(UserContext);
-  const [pedidos, setPedidos] = useState([]);
+
+  /**@type {[import("../../../types").PedidoCompleto | null, React.Dispatch<React.SetStateAction<import("../../../types").PedidoCompleto | null>>]} */
+  const [pedido, setPedido] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [filter, setFilter] = useState("");
+  const pedidoId = useParams().pedidoId;
 
   useEffect(() => {
     setLoading(true);
@@ -54,76 +56,37 @@ export function ListadoPedidos() {
     }
 
     api
-      .getPedidos(token, { clienteId: user.cliente.id })
+      .getPedidos(token, { clienteId: user.cliente.id, id: pedidoId })
       .then((data) => {
         setLoading(false);
         setSuccess(true);
-        setPedidos(data);
+        setPedido(data[0]);
       })
       .catch(() => {
-        setPedidos([]);
+        setPedido(null);
         setError("Error al cargar los pedidos. Inténtalo más tarde.");
         setSuccess(false);
       });
-  }, [token, user.cliente.id]);
+  }, [token, user.cliente.id, pedidoId]);
 
-  // Filtrar pedidos según el estado seleccionado
-  const pedidosFiltrados = filter
-    ? pedidos.filter((p) => p.estado === filter)
-    : pedidos;
-
-  console.log("Pedidos:", pedidos);
   return (
     <Layout>
       <Container maxWidth="md" sx={{ height: "100%" }}>
         <Box padding={4}>
           {loading && !error && <Typography>Cargando pedidos...</Typography>}
           {error && <Alert severity="error">{error}</Alert>}
-          {success && pedidos.length === 0 && (
-            <Alert severity="info">No tienes pedidos realizados.</Alert>
+          {success && !pedido && (
+            <Alert severity="info">No hay datos del pedido.</Alert>
           )}
         </Box>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Mis Pedidos
-        </Typography>
-        <Divider></Divider>
-        <Stack
-          flexDirection={"row"}
-          flexWrap={"wrap"}
-          alignItems={"center"}
-          justifyContent={"end"}
-          mt={2}
-          mb={2}
-          gap={1}
-        >
-          <Typography>Filtrar por estado del pedido:</Typography>
-          <FormControl size="small" sx={{ flexGrow: 0 }}>
-            <InputLabel id="estado-filtro-label">Estado</InputLabel>
-            <Select
-              labelId="estado-filtro-label"
-              id="estado-filtro"
-              value={filter}
-              sx={{ minWidth: "160px" }}
-              label="Estado"
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <MenuItem value="">Todos</MenuItem>
-              {Object.values(PedidoEstadoEnum.Enum).map((estado) => (
-                <MenuItem key={estado} value={estado}>
-                  {PEDIDO_ESTADOS_TEXTO[estado] || estado}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-        {pedidosFiltrados.length > 0 && (
-          <Box>
-            {pedidosFiltrados.map((pedido) => (
+        {pedido && (
+          <>
+            <Box>
               <span key={pedido.id}>
                 <PedidoCard pedido={pedido} />
               </span>
-            ))}
-          </Box>
+            </Box>
+          </>
         )}
       </Container>
     </Layout>
@@ -135,8 +98,6 @@ export function ListadoPedidos() {
  * @param {import("../../../types").PedidoCompleto} props.pedido
  */
 function PedidoCard({ pedido }) {
-  const navigate = useNavigate();
-
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
   if (!pedido) return null;
 
@@ -314,9 +275,6 @@ function PedidoCard({ pedido }) {
           color="primary"
           startIcon={<Group />}
           sx={{ borderRadius: 2, fontWeight: 600 }}
-          onClick={() => {
-            navigate(`/cliente/pedidos/${pedido.id}/candidatos`);
-          }}
         >
           Ver Candidatos
         </Button>

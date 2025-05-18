@@ -13,6 +13,7 @@ import { PedidoNuevo } from "./features/cliente/PedidoNuevo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ListadoPedidos } from "./features/cliente/ListadoPedidos";
+import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
 
 function App() {
   const themeOptions = {
@@ -48,7 +49,10 @@ function App() {
             <Route path="/register/tecnico" element={<RegisterTecnico />} />
             <Route path="/cliente/nuevo-pedido" element={<PedidoNuevo />} />
             <Route path="/cliente/pedidos" element={<ListadoPedidos />} />
-
+            <Route
+              path="/cliente/pedidos/:pedidoId/candidatos"
+              element={<PedidoCandidatos />}
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
