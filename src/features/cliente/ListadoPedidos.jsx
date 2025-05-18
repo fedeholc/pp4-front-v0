@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PedidoEstadoEnum } from "../../../types/schemas";
+import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
 export function ListadoPedidos() {
   const { token, user } = useContext(UserContext);
   const [pedidos, setPedidos] = useState([]);
@@ -114,9 +115,7 @@ function PedidoCard({ pedido }) {
           {d.dia} de {d.horaInicio} a {d.horaFin}
         </Typography>
       ))}
-      <Typography>
-        Estado: {pedido.estado.replace(/_/g, " ").toLowerCase()}
-      </Typography>
+      <Typography>Estado: {PEDIDO_ESTADOS_TEXTO[pedido.estado]}</Typography>
       <Typography>
         Técnico:{" "}
         {pedido.tecnico
