@@ -10,6 +10,11 @@ import {
   Paper,
   Stack,
   Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Divider,
 } from "@mui/material";
 import { PedidoEstadoEnum } from "../../../types/schemas";
 import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
@@ -19,6 +24,7 @@ export function ListadoPedidos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -44,6 +50,11 @@ export function ListadoPedidos() {
       });
   }, [token, user.cliente.id]);
 
+  // Filtrar pedidos según el estado seleccionado
+  const pedidosFiltrados = filter
+    ? pedidos.filter((p) => p.estado === filter)
+    : pedidos;
+
   console.log("Pedidos:", pedidos);
   return (
     <Layout>
@@ -58,9 +69,38 @@ export function ListadoPedidos() {
         <Typography variant="h4" component="h1" gutterBottom>
           Mis Pedidos
         </Typography>
-        {pedidos.length > 0 && (
+        <Divider></Divider>
+        <Stack
+          flexDirection={"row"}
+          flexWrap={"wrap"}
+          alignItems={"center"}
+          mt={2}
+          mb={2}
+          gap={1}
+        >
+          <Typography>Filtrar por estado del pedido:</Typography>
+          <FormControl size="small" sx={{ flexGrow: 1 }}>
+            <InputLabel id="estado-filtro-label">Estado</InputLabel>
+            <Select
+              labelId="estado-filtro-label"
+              id="estado-filtro"
+              value={filter}
+              sx={{ minWidth: "160px" }}
+              label="Estado"
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {Object.values(PedidoEstadoEnum.Enum).map((estado) => (
+                <MenuItem key={estado} value={estado}>
+                  {PEDIDO_ESTADOS_TEXTO[estado] || estado}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+        {pedidosFiltrados.length > 0 && (
           <Box>
-            {pedidos.map((pedido) => (
+            {pedidosFiltrados.map((pedido) => (
               <span key={pedido.id}>
                 <PedidoCard pedido={pedido} />
               </span>
