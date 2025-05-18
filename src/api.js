@@ -18,7 +18,7 @@ function getHeaders(token, isJson = true) {
 /**@typedef {import('../types').Tecnico} Tecnico */
 /**@typedef {import('../types').TecnicoArea} TecnicoArea */
 /**@typedef {import('../types').Pedido} Pedido */
-/**@typedef {import('../types').PedidoCandidatos} PedidoCandidato */
+/**@typedef {import('../types').PedidoCandidato} PedidoCandidato */
 /**@typedef {import('../types').PedidoDisponibilidad} PedidoDisponibilidad */
 /**@typedef {import('../types').PedidoEstado} PedidoEstado */
 /**@typedef {import('../types').PedidoDisponibilidadDia} PedidoDisponibilidadDia */

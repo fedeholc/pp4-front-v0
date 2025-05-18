@@ -94,7 +94,7 @@ export const PedidoDisponibilidadSchema = z.object({
 });
 
 // PedidoCandidatos
-export const PedidoCandidatosSchema = z.object({
+export const PedidoCandidatoSchema = z.object({
   id: z.number().nullable(),
   pedidoId: z.number().nullable(),
   tecnicoId: z.number().nullable(),
@@ -118,10 +118,20 @@ export const UsuarioCompletoSchema = UsuarioSchema.extend({
   tecnico: TecnicoSchema.optional().nullable(),
 });
 
+
+
+export const CandidatoVistaSchema = PedidoCandidatoSchema.extend({
+  nombre: z.string().nullable(),
+  apellido: z.string().nullable(),
+  telefono: z.string().nullable(),
+  caracteristicas: z.string().nullable(),
+  fechaRegistro: z.coerce.date().nullable(),
+  calificaciones: z.array(z.number().nullable()).optional().nullable(),
+});
 export const PedidoCompletoSchema = PedidoSchema.extend({
   cliente: ClienteSchema.optional().nullable(),
   tecnico: TecnicoSchema.optional().nullable(),
   area: AreaSchema.optional().nullable(),
   disponibilidad: z.array(PedidoDisponibilidadSchema).optional().nullable(),
-  candidatos: z.array(PedidoCandidatosSchema).optional().nullable(),
+  candidatos: z.array(CandidatoVistaSchema).optional().nullable(),
 });
