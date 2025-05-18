@@ -92,6 +92,15 @@ function PedidoCard({ pedido }) {
     calificarTecnicoDisabled = false;
   }
 
+  let candidatosDisabled = true;
+  if (
+    pedido.estado === "con_candidatos" &&
+    pedido.candidatos &&
+    pedido.candidatos.length > 0
+  ) {
+    candidatosDisabled = false;
+  }
+
   return (
     <Paper
       className="gradientBackground"
@@ -116,8 +125,9 @@ function PedidoCard({ pedido }) {
         </Typography>
       ))}
       <Typography>Estado: {PEDIDO_ESTADOS_TEXTO[pedido.estado]}</Typography>
+      <Typography>Candidatos: {pedido.candidatos.length} </Typography>
       <Typography>
-        Técnico:{" "}
+        Técnico seleccionado:{" "}
         {pedido.tecnico
           ? `${pedido.tecnico.nombre} ${pedido.tecnico.apellido}`
           : "No asignado"}
@@ -137,13 +147,23 @@ function PedidoCard({ pedido }) {
       <Stack
         direction="row"
         justifyContent={"flex-end"}
-        spacing={2}
+        flexWrap={"wrap"}
+        gap={1}
         marginTop={2}
       >
         <Button
           className="button"
+          disabled={candidatosDisabled}
+          variant="contained"
+          size="small"
+        >
+          Ver Candidatos
+        </Button>
+        <Button
+          className="button"
           disabled={calificarTecnicoDisabled}
           variant="contained"
+          size="small"
         >
           Calificar Técnico
         </Button>
