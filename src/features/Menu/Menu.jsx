@@ -15,10 +15,11 @@ import {
   StarHalf,
 } from "@phosphor-icons/react";
 import { Container, Paper } from "@mui/material";
+import { useNavigate } from "react-router";
 
 export function Menu() {
   const { user } = useContext(UserContext);
-
+  const navigate = useNavigate();
   console.log("User in Menu:", user);
   function MenuCliente() {
     return (
@@ -43,7 +44,12 @@ export function Menu() {
                 spacing={1}
               >
                 <Toolbox size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/pedido/nuevo")}
+                >
                   Solicitar servicio técnico
                 </Button>
               </Stack>

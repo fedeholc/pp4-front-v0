@@ -9,6 +9,9 @@ import { RegisterTecnico } from "./features/register/RegisterTecnico";
 import { ProtectedRoute } from "./features/ProtectedRoute";
 import { Navigate } from "react-router";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { PedidoNuevo } from "./features/pedido/PedidoNuevo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 function App() {
   const themeOptions = {
@@ -26,25 +29,29 @@ function App() {
   const theme = createTheme(themeOptions);
 
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/menu"
-            element={
-              <ProtectedRoute>
-                <Menu />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/register/cliente" element={<RegisterCliente />} />
-          <Route path="/register/tecnico" element={<RegisterTecnico />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/menu"
+              element={
+                <ProtectedRoute>
+                  <Menu />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/register/cliente" element={<RegisterCliente />} />
+            <Route path="/register/tecnico" element={<RegisterTecnico />} />
+            <Route path="/pedido/nuevo" element={<PedidoNuevo />} />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

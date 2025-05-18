@@ -80,6 +80,7 @@ export const PedidoDisponibilidadDiaEnum = z.enum([
   "jueves",
   "viernes",
   "sábado",
+  "domingo",
 ]);
 
 // PedidoDisponibilidad

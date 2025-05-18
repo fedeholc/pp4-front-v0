@@ -376,7 +376,7 @@ export const getPedidoDisponibilidadById = (id, token) =>
 
 /**
  * Crear una disponibilidad de pedido
- * @param {Partial<PedidoDisponibilidad>} data
+ * @param {PedidoDisponibilidad} data
  * @param {string} token
  * @returns {Promise<PedidoDisponibilidad>}
  */
