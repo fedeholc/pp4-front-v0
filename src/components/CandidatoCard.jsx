@@ -96,7 +96,7 @@ export function CandidatoCard({ candidato }) {
           spacing={2}
           flex={1}
           justifyContent="center"
-          direction={{ xs: "row", sm: "column" }}
+          direction={"column"}
           alignItems={"flex-end"}
         >
           <Button
