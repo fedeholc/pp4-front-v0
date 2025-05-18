@@ -80,6 +80,7 @@ export const PedidoDisponibilidadDiaEnum = z.enum([
   "jueves",
   "viernes",
   "sábado",
+  "domingo",
 ]);
 
 // PedidoDisponibilidad
@@ -110,4 +111,9 @@ export const FacturaSchema = z.object({
   descripcion: z.string().nullable(),
   total: z.number().nullable(),
   metodoPago: FacturaMetodoPagoEnum.nullable(),
+});
+
+export const UsuarioCompletoSchema = UsuarioSchema.extend({
+  cliente: ClienteSchema.optional().nullable(),
+  tecnico: TecnicoSchema.optional().nullable(),
 });

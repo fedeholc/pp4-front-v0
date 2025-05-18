@@ -14,7 +14,7 @@ import { Layout } from "../../components/Layout";
 import { Paper } from "@mui/material";
 
 export function Login() {
-  const { login } = useContext(UserContext);
+  const { setUser, setToken } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,7 +28,8 @@ export function Login() {
     try {
       const res = await api.login({ email, password });
       if (res.token && res.user) {
-        login(res.user, res.token);
+        setUser(res.user);
+        setToken(res.token);
         navigate("/menu");
       } else {
         setError("Credenciales inválidas");
@@ -54,7 +55,7 @@ export function Login() {
             Iniciar sesión
           </Typography>
         </Box>
-          <Paper className="gradientBackground" variant="outlined" sx={{ p: 4, }}>
+        <Paper className="gradientBackground" variant="outlined" sx={{ p: 4 }}>
           <form onSubmit={handleSubmit}>
             <Stack direction="column" spacing={3}>
               <TextField

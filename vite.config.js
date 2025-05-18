@@ -18,4 +18,26 @@ export default defineConfig({
       "@src": path.resolve(__dirname, "./src"), // Alias para la carpeta 'src'
     },
   },
+  plugins: [
+    {
+      name: "ignore-use-client-warnings",
+      apply: "build",
+      buildEnd() {
+        // No-op: solo para que el plugin exista
+      },
+      // Vite no expone una API oficial para filtrar warnings, pero puedes intentar:
+      configResolved(config) {
+        const originalWarn = config.logger.warn;
+        config.logger.warn = (msg) => {
+          if (
+            typeof msg === "string" &&
+            msg.includes("Module level directives cause errors when bundled")
+          ) {
+            return;
+          }
+          originalWarn(msg);
+        };
+      },
+    },
+  ],
 });

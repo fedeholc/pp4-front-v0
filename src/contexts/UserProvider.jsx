@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
 export function UserProvider({ children }) {
-  /**@typedef {import("../../types").Usuario } Usuario*/
+  /**@typedef {import("../../types").UsuarioCompleto } UsuarioCompleto */
 
-  /** @type {[Usuario | null, React.Dispatch<React.SetStateAction<Usuario | null>>]} */
+  /** @type {[UsuarioCompleto | null, React.Dispatch<React.SetStateAction<UsuarioCompleto | null>>]} */
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -31,14 +31,7 @@ export function UserProvider({ children }) {
     }
   }, [token]);
 
-  /**
-   * @param {Usuario} userData
-   * @param {string} tokenData
-   */
-  const login = (userData, tokenData) => {
-    setUser(userData);
-    setToken(tokenData);
-  };
+ 
 
   const logout = () => {
     setUser(null);
@@ -48,7 +41,9 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, token, login, logout }}>
+    <UserContext.Provider
+      value={{ user, token, setUser, setToken, logout }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -87,7 +87,7 @@ export const deleteArea = (id, token) =>
 /**
  * Login de usuario
  * @param {{email: string, password: string}} data
- * @returns {Promise<{token: string, user: Usuario}>}
+ * @returns {Promise<{token: string, user: import('../types').UsuarioCompleto}>}
  */
 export const login = (data) =>
   fetch(`${API_URL}/auth/login`, {
@@ -376,7 +376,7 @@ export const getPedidoDisponibilidadById = (id, token) =>
 
 /**
  * Crear una disponibilidad de pedido
- * @param {Partial<PedidoDisponibilidad>} data
+ * @param {PedidoDisponibilidad} data
  * @param {string} token
  * @returns {Promise<PedidoDisponibilidad>}
  */

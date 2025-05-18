@@ -41,7 +41,7 @@ function Footer() {
 }
 
 function ResponsiveAppBar() {
-  const pages = ["Registrarme", "Login", "Menu Principal"];
+  const pages = ["Registrarme", "Login", "Menú Principal"];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
