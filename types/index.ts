@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ClienteSchema, AreaSchema, UsuarioSchema, TecnicoSchema, PedidoSchema, PedidoCandidatosSchema, PedidoDisponibilidadSchema, PedidoEstadoEnum, PedidoDisponibilidadDiaEnum, TecnicoAreaSchema, UsuarioRolEnum, FacturaSchema, FacturaMetodoPagoEnum, UsuarioCompletoSchema } from './schemas';
+import { ClienteSchema, AreaSchema, UsuarioSchema, TecnicoSchema, PedidoSchema, PedidoCandidatosSchema, PedidoDisponibilidadSchema, PedidoEstadoEnum, PedidoDisponibilidadDiaEnum, TecnicoAreaSchema, UsuarioRolEnum, FacturaSchema, FacturaMetodoPagoEnum, UsuarioCompletoSchema, PedidoCompletoSchema } from './schemas';
 export type Cliente = z.infer<typeof ClienteSchema>;
 export type Area = z.infer<typeof AreaSchema>;
 export type Usuario = z.infer<typeof UsuarioSchema>;
@@ -14,6 +14,7 @@ export type UsuarioRol = z.infer<typeof UsuarioRolEnum>;
 export type Factura = z.infer<typeof FacturaSchema>;
 export type FacturaMetodoPago = z.infer<typeof FacturaMetodoPagoEnum>;
 export type UsuarioCompleto = z.infer<typeof UsuarioCompletoSchema>;
+export type PedidoCompleto = z.infer<typeof PedidoCompletoSchema>;
 
 
 export type TecnicoConAreas = Tecnico & {
