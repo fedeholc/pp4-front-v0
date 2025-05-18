@@ -48,7 +48,7 @@ export function Menu() {
                   className="button"
                   size="large"
                   variant="contained"
-                  onClick={() => navigate("/pedido/nuevo")}
+                  onClick={() => navigate("/nuevo-pedido")}
                 >
                   Solicitar servicio técnico
                 </Button>
