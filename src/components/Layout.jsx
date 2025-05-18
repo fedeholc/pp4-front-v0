@@ -24,7 +24,7 @@ export function Layout({ children }) {
     <div className="layout">
       {/*  <Navbar /> */}
       <ResponsiveAppBar></ResponsiveAppBar>
-      <main className="main">{children}</main>
+      <main  >{children}</main>
       <Footer />
     </div>
   );

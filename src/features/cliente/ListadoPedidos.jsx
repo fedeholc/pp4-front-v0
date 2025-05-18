@@ -15,9 +15,25 @@ import {
   FormControl,
   InputLabel,
   Divider,
+  Collapse,
+  IconButton,
 } from "@mui/material";
 import { PedidoEstadoEnum } from "../../../types/schemas";
 import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
+import {
+  CheckCircle,
+  Cancel,
+  Star,
+  Person,
+  Comment,
+  Assignment,
+  Group,
+  CalendarMonth,
+  AccessTime,
+  ExpandMore,
+  ExpandLess,
+} from "@mui/icons-material";
+
 export function ListadoPedidos() {
   const { token, user } = useContext(UserContext);
   const [pedidos, setPedidos] = useState([]);
@@ -58,7 +74,7 @@ export function ListadoPedidos() {
   console.log("Pedidos:", pedidos);
   return (
     <Layout>
-      <Container maxWidth="sm" sx={{ height: "100%" }}>
+      <Container maxWidth="md" sx={{ height: "100%" }}>
         <Box padding={4}>
           {loading && !error && <Typography>Cargando pedidos...</Typography>}
           {error && <Alert severity="error">{error}</Alert>}
@@ -74,12 +90,13 @@ export function ListadoPedidos() {
           flexDirection={"row"}
           flexWrap={"wrap"}
           alignItems={"center"}
+          justifyContent={"end"}
           mt={2}
           mb={2}
           gap={1}
         >
           <Typography>Filtrar por estado del pedido:</Typography>
-          <FormControl size="small" sx={{ flexGrow: 1 }}>
+          <FormControl size="small" sx={{ flexGrow: 0 }}>
             <InputLabel id="estado-filtro-label">Estado</InputLabel>
             <Select
               labelId="estado-filtro-label"
@@ -117,6 +134,7 @@ export function ListadoPedidos() {
  * @param {import("../../../types").PedidoCompleto} props.pedido
  */
 function PedidoCard({ pedido }) {
+  const [showDisponibilidad, setShowDisponibilidad] = useState(false);
   if (!pedido) return null;
 
   let cancelDisabled = true;
@@ -144,58 +162,155 @@ function PedidoCard({ pedido }) {
   return (
     <Paper
       className="gradientBackground"
+      elevation={4}
       variant="outlined"
-      sx={{ padding: 2, marginBottom: 2 }}
+      sx={{
+        p: 3,
+        mb: 3,
+        borderRadius: 4,
+        background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+        boxShadow: 1,
+        border: "1px solid #e0e0e0",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
-      <Typography>Pedido ID: {pedido.id}</Typography>
-      <Typography>
-        Fecha de solicitud:{" "}
-        {new Date(pedido.fechaCreacion).toLocaleDateString()}
-      </Typography>
-      <Typography>Area: {pedido.area.nombre}</Typography>
-      <Typography>Requerimiento: {pedido.requerimiento}</Typography>
-      <Typography>Disponibilidad: </Typography>
-
-      {pedido.disponibilidad?.length === 0 && (
-        <Typography pl={2}>No hay disponibilidad registrada.</Typography>
-      )}
-      {pedido?.disponibilidad?.map((d, index) => (
-        <Typography pl={2} key={index}>
-          {d.dia} de {d.horaInicio} a {d.horaFin}
+      <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+        <Assignment color="primary" />
+        <Typography variant="h6" fontWeight={700}>
+          Pedido #{pedido.id}
         </Typography>
-      ))}
-      <Typography>Estado: {PEDIDO_ESTADOS_TEXTO[pedido.estado]}</Typography>
-      <Typography>Candidatos: {pedido.candidatos.length} </Typography>
-      <Typography>
-        Técnico seleccionado:{" "}
-        {pedido.tecnico
-          ? `${pedido.tecnico.nombre} ${pedido.tecnico.apellido}`
-          : "No asignado"}
-      </Typography>
-      <Typography>
-        Calificación del técnico:{" "}
-        {pedido.calificacion ? pedido.calificacion : "No calificado"}
-      </Typography>
-      <Typography>
-        Comentario sobre el técnico:{" "}
-        {pedido.comentario ? pedido.comentario : "No hay comentario"}
-      </Typography>
-      <Typography>
-        Respuesta del técnico:{" "}
-        {pedido.respuesta ? pedido.respuesta : "No hay respuesta"}
-      </Typography>
+        <Box flexGrow={1} />
+        <Box display="flex" alignItems="center" gap={1}>
+          <CheckCircle
+            color={
+              pedido.estado === "finalizado" || pedido.estado === "calificado"
+                ? "success"
+                : "disabled"
+            }
+          />
+          <Typography variant="body2" color="text.secondary">
+            {PEDIDO_ESTADOS_TEXTO[pedido.estado]}
+          </Typography>
+        </Box>
+      </Stack>
+      <Divider sx={{ mb: 2 }} />
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <Stack spacing={2} flex={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <CalendarMonth fontSize="small" color="action" />
+            <Typography variant="body2">
+              <b>Fecha:</b>{" "}
+              {new Date(pedido.fechaCreacion).toLocaleDateString()}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Group fontSize="small" color="action" />
+            <Typography variant="body2">
+              <b>Área:</b> {pedido.area.nombre}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Comment fontSize="small" color="action" />
+            <Typography variant="body2">
+              <b>Requerimiento:</b> {pedido.requerimiento}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <AccessTime fontSize="small" color="action" />
+            <Typography variant="body2">
+              <b>Disponibilidad:</b>
+            </Typography>
+            <IconButton
+              size="small"
+              onClick={() => setShowDisponibilidad((v) => !v)}
+              aria-label={
+                showDisponibilidad
+                  ? "Ocultar disponibilidad"
+                  : "Ver disponibilidad"
+              }
+            >
+              {showDisponibilidad ? <ExpandLess /> : <ExpandMore />}
+            </IconButton>
+          </Stack>
+          <Collapse
+            style={{ marginTop: "0rem" }}
+            in={showDisponibilidad}
+            timeout="auto"
+            unmountOnExit
+          >
+            {pedido.disponibilidad?.length === 0 && (
+              <Typography pl={4} color="text.secondary">
+                No hay disponibilidad registrada.
+              </Typography>
+            )}
+            {pedido?.disponibilidad?.map((d, index) => (
+              <Typography pl={4} key={index} color="text.secondary">
+                {d.dia} de {d.horaInicio} a {d.horaFin}
+              </Typography>
+            ))}
+          </Collapse>
+        </Stack>
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ display: { xs: "none", sm: "block" } }}
+        />
+        <Stack spacing={2} flex={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Group fontSize="small" color="primary" />
+            <Typography variant="body2">
+              <b>Candidatos:</b> {pedido.candidatos.length}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Person fontSize="small" color="primary" />
+            <Typography variant="body2">
+              <b>Técnico:</b>{" "}
+              {pedido.tecnico
+                ? `${pedido.tecnico.nombre} ${pedido.tecnico.apellido}`
+                : "No asignado"}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Star fontSize="small" color="warning" />
+            <Typography variant="body2">
+              <b>Calificación:</b>{" "}
+              {pedido.calificacion ? pedido.calificacion : "No calificado"}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Comment fontSize="small" color="secondary" />
+            <Typography variant="body2">
+              <b>Comentario:</b>{" "}
+              {pedido.comentario ? pedido.comentario : "No hay comentario"}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Comment fontSize="small" color="success" />
+            <Typography variant="body2">
+              <b>Respuesta técnico:</b>{" "}
+              {pedido.respuesta ? pedido.respuesta : "No hay respuesta"}
+            </Typography>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Divider sx={{ my: 2 }} />
       <Stack
         direction="row"
-        justifyContent={"flex-end"}
-        flexWrap={"wrap"}
-        gap={1}
-        marginTop={2}
+        justifyContent={{ xs: "center", sm: "flex-end" }}
+        flexWrap="wrap"
+        gap={2}
+        mt={2}
       >
         <Button
           className="button"
           disabled={candidatosDisabled}
-          variant="contained"
-          size="small"
+          variant="outlined"
+          size="medium"
+          color="primary"
+          startIcon={<Group />}
+          sx={{ borderRadius: 2, fontWeight: 600 }}
         >
           Ver Candidatos
         </Button>
@@ -203,16 +318,21 @@ function PedidoCard({ pedido }) {
           className="button"
           disabled={calificarTecnicoDisabled}
           variant="contained"
-          size="small"
+          size="medium"
+          color="warning"
+          startIcon={<Star />}
+          sx={{ borderRadius: 2, fontWeight: 600 }}
         >
           Calificar Técnico
         </Button>
         <Button
-          size="small"
+          size="medium"
           className="button"
           disabled={cancelDisabled}
           variant="contained"
           color="secondary"
+          startIcon={<Cancel />}
+          sx={{ borderRadius: 2, fontWeight: 600 }}
         >
           Cancelar Pedido
         </Button>
