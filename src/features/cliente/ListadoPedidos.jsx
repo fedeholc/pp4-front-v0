@@ -212,6 +212,7 @@ function PedidoCard({ pedido }) {
           className="button"
           disabled={cancelDisabled}
           variant="contained"
+          color="secondary"
         >
           Cancelar Pedido
         </Button>

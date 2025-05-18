@@ -23,7 +23,7 @@ function App() {
         main: "#367100",
       },
       secondary: {
-        main: "#ffc107",
+        main: "#3B0071",
       },
     },
   };
