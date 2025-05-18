@@ -197,6 +197,7 @@ function CandidatoCard({ candidato }) {
             color="secondary"
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
+            startIcon={<Person />}
           >
             VER PERFIL
           </Button>
@@ -205,6 +206,7 @@ function CandidatoCard({ candidato }) {
             color="primary"
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
+            startIcon={<CheckCircle />}
           >
             SELECCIONAR
           </Button>
