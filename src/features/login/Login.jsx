@@ -49,7 +49,7 @@ export function Login() {
         alignItems="center"
         justifyContent="center"
         spacing={3}
-        sx={{ height: "100%" }}
+        sx={{ height: "100%",  }}
       >
         <Box p={1}>
           <Typography

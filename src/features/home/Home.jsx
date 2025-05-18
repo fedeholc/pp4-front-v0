@@ -20,16 +20,11 @@ export function Home() {
         height="100%"
         gap={4}
         sx={{
-          background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
-          minHeight: "100vh",
+          /*           background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+           */ padding: 4,
         }}
       >
-        <Stack
-          direction="column"
-          gap={4}
-          alignItems="center"
-          sx={{ width: "100%" }}
-        >
+        <Stack direction="column" gap={4} alignItems="center">
           <Typography
             variant="h3"
             fontWeight="bold"
@@ -59,9 +54,7 @@ export function Home() {
               background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
               boxShadow: 1,
               border: "1px solid #e0e0e0",
-              minWidth: 340,
-              maxWidth: 420,
-              width: "100%",
+
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
