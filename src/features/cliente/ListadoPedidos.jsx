@@ -15,6 +15,8 @@ import {
   FormControl,
   InputLabel,
   Divider,
+  Collapse,
+  IconButton,
 } from "@mui/material";
 import { PedidoEstadoEnum } from "../../../types/schemas";
 import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
@@ -28,6 +30,8 @@ import {
   Group,
   CalendarMonth,
   AccessTime,
+  ExpandMore,
+  ExpandLess,
 } from "@mui/icons-material";
 
 export function ListadoPedidos() {
@@ -129,6 +133,7 @@ export function ListadoPedidos() {
  * @param {import("../../../types").PedidoCompleto} props.pedido
  */
 function PedidoCard({ pedido }) {
+  const [showDisponibilidad, setShowDisponibilidad] = useState(false);
   if (!pedido) return null;
 
   let cancelDisabled = true;
@@ -178,8 +183,7 @@ function PedidoCard({ pedido }) {
         <Box display="flex" alignItems="center" gap={1}>
           <CheckCircle
             color={
-              pedido.estado === PedidoEstadoEnum.Enum.finalizado ||
-              pedido.estado === PedidoEstadoEnum.Enum.calificado
+              pedido.estado === "finalizado" || pedido.estado === "calificado"
                 ? "success"
                 : "disabled"
             }
@@ -191,7 +195,7 @@ function PedidoCard({ pedido }) {
       </Stack>
       <Divider sx={{ mb: 2 }} />
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-        <Stack spacing={1} flex={2}>
+        <Stack spacing={2} flex={2}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <CalendarMonth fontSize="small" color="action" />
             <Typography variant="body2">
@@ -216,24 +220,42 @@ function PedidoCard({ pedido }) {
             <Typography variant="body2">
               <b>Disponibilidad:</b>
             </Typography>
+            <IconButton
+              size="small"
+              onClick={() => setShowDisponibilidad((v) => !v)}
+              aria-label={
+                showDisponibilidad
+                  ? "Ocultar disponibilidad"
+                  : "Ver disponibilidad"
+              }
+            >
+              {showDisponibilidad ? <ExpandLess /> : <ExpandMore />}
+            </IconButton>
           </Stack>
-          {pedido.disponibilidad?.length === 0 && (
-            <Typography pl={4} color="text.secondary">
-              No hay disponibilidad registrada.
-            </Typography>
-          )}
-          {pedido?.disponibilidad?.map((d, index) => (
-            <Typography pl={4} key={index} color="text.secondary">
-              {d.dia} de {d.horaInicio} a {d.horaFin}
-            </Typography>
-          ))}
+          <Collapse
+            style={{ marginTop: "0rem" }}
+            in={showDisponibilidad}
+            timeout="auto"
+            unmountOnExit
+          >
+            {pedido.disponibilidad?.length === 0 && (
+              <Typography pl={4} color="text.secondary">
+                No hay disponibilidad registrada.
+              </Typography>
+            )}
+            {pedido?.disponibilidad?.map((d, index) => (
+              <Typography pl={4} key={index} color="text.secondary">
+                {d.dia} de {d.horaInicio} a {d.horaFin}
+              </Typography>
+            ))}
+          </Collapse>
         </Stack>
         <Divider
           orientation="vertical"
           flexItem
           sx={{ display: { xs: "none", sm: "block" } }}
         />
-        <Stack spacing={1} flex={2}>
+        <Stack spacing={2} flex={2}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Group fontSize="small" color="primary" />
             <Typography variant="body2">
