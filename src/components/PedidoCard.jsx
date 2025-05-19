@@ -12,6 +12,7 @@ import {
   Star,
 } from "@mui/icons-material";
 import {
+  Alert,
   Box,
   Button,
   Collapse,
@@ -21,43 +22,79 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PEDIDO_ESTADOS_TEXTO } from "../../types/const";
 import { PedidoEstadoEnum } from "../../types/schemas";
 import { useNavigate } from "react-router";
-
+import * as api from "../api";
+import { UserContext } from "../contexts/UserContext";
 /**
  * @param {Object} props
  * @param {import("../../types").PedidoCompleto} props.pedido
  * @param {boolean} props.displayButtons
  */
 export function PedidoCard({ pedido, displayButtons }) {
+  const { token } = useContext(UserContext);
   const navigate = useNavigate();
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
-  if (!pedido) return null;
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [cancelDisabled, setCancelDisabled] = useState(true);
+  const [candidatosDisabled, setCandidatosDisabled] = useState(true);
+  const [isPedidoCancelled, setIsPedidoCancelled] = useState(false);
 
-  let cancelDisabled = true;
-  if (
-    pedido.estado === PedidoEstadoEnum.Enum.sin_candidatos ||
-    pedido.estado === PedidoEstadoEnum.Enum.con_candidatos
-  ) {
-    cancelDisabled = false;
-  }
+  useEffect(() => {
+    if (!pedido) return null;
+
+    if (
+      pedido.estado === PedidoEstadoEnum.Enum.sin_candidatos ||
+      pedido.estado === PedidoEstadoEnum.Enum.con_candidatos
+    ) {
+      if (isPedidoCancelled === false) {
+        setCancelDisabled(false);
+      } else {
+        setCancelDisabled(true);
+      }
+    }
+
+    if (
+      pedido.estado === "con_candidatos" &&
+      pedido.candidatos &&
+      pedido.candidatos.length > 0 &&
+      isPedidoCancelled === false
+    ) {
+      setCandidatosDisabled(false);
+    } else {
+      setCandidatosDisabled(true);
+    }
+  }, [pedido, cancelDisabled, isPedidoCancelled]);
+
+  if (!pedido) return null;
 
   let calificarTecnicoDisabled = true;
   if (pedido.tecnicoId && !pedido.calificacion) {
     calificarTecnicoDisabled = false;
   }
 
-  let candidatosDisabled = true;
-  if (
-    pedido.estado === "con_candidatos" &&
-    pedido.candidatos &&
-    pedido.candidatos.length > 0
-  ) {
-    candidatosDisabled = false;
+  async function handleCancelPedido(id) {
+    try {
+      setCancelDisabled(true);
+      setIsPedidoCancelled(true);
+      let response = await api.updatePedido(
+        id,
+        { ...pedido, estado: PedidoEstadoEnum.enum.cancelado },
+        token
+      );
+      if (response) {
+        setSuccess(true);
+        setError(null);
+      }
+    } catch (error) {
+      console.log("Error al cancelar el pedido:", error);
+      setCancelDisabled(false);
+      setError("Error al cancelar el pedido. Inténtalo más tarde.");
+    }
   }
-
   return (
     <Paper
       className="gradientBackground"
@@ -237,10 +274,21 @@ export function PedidoCard({ pedido, displayButtons }) {
               color="secondary"
               startIcon={<Cancel />}
               sx={{ borderRadius: 2, fontWeight: 600 }}
+              onClick={() => handleCancelPedido(pedido.id)}
             >
               Cancelar Pedido
             </Button>
           </Stack>
+          {error && (
+            <Box mt={2}>
+              <Alert severity="error">{error}</Alert>
+            </Box>
+          )}
+          {success && (
+            <Box mt={2}>
+              <Alert severity="success">Pedido cancelado con éxito.</Alert>
+            </Box>
+          )}
         </>
       )}
     </Paper>

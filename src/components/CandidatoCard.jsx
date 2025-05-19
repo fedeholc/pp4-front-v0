@@ -13,11 +13,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 /**
  * @param {Object} props
  * @param {import("../../types").CandidatoVista} props.candidato
+ * @param {function} props.onSelectTecnico
  */
-export function CandidatoCard({ candidato }) {
+export function CandidatoCard({ candidato, onSelectTecnico }) {
+  const navigate = useNavigate();
   let average =
     candidato.calificaciones.reduce(
       (acc, calificacion) => acc + calificacion,
@@ -96,7 +99,7 @@ export function CandidatoCard({ candidato }) {
           spacing={2}
           flex={1}
           justifyContent="center"
-          direction={{ xs: "row", sm: "column" }}
+          direction={"column"}
           alignItems={"flex-end"}
         >
           <Button
@@ -105,6 +108,9 @@ export function CandidatoCard({ candidato }) {
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
             startIcon={<Person />}
+            onClick={() => {
+              navigate(`/tecnico/${candidato.id}/perfil`);
+            }}
           >
             VER PERFIL
           </Button>
@@ -114,6 +120,9 @@ export function CandidatoCard({ candidato }) {
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
             startIcon={<CheckCircle />}
+            onClick={() => {
+              onSelectTecnico(candidato.id);
+            }}
           >
             SELECCIONAR
           </Button>
