@@ -17,8 +17,9 @@ import { useNavigate } from "react-router";
 /**
  * @param {Object} props
  * @param {import("../../types").CandidatoVista} props.candidato
+ * @param {function} props.onSelectTecnico
  */
-export function CandidatoCard({ candidato }) {
+export function CandidatoCard({ candidato, onSelectTecnico }) {
   const navigate = useNavigate();
   let average =
     candidato.calificaciones.reduce(
@@ -119,6 +120,9 @@ export function CandidatoCard({ candidato }) {
             size="medium"
             sx={{ borderRadius: 2, fontWeight: 600, minWidth: 140 }}
             startIcon={<CheckCircle />}
+            onClick={() => {
+              onSelectTecnico(candidato.id);
+            }}
           >
             SELECCIONAR
           </Button>

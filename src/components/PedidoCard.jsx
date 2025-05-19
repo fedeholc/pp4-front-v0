@@ -90,6 +90,7 @@ export function PedidoCard({ pedido, displayButtons }) {
         setError(null);
       }
     } catch (error) {
+      console.log("Error al cancelar el pedido:", error);
       setCancelDisabled(false);
       setError("Error al cancelar el pedido. Inténtalo más tarde.");
     }
