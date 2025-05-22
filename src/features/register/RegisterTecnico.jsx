@@ -64,7 +64,8 @@ export function RegisterTecnico() {
         password: form.password,
         rol: "tecnico",
       });
-      if (!user?.id) throw new Error("Error al registrar usuario");
+      // @ts-ignore
+      if (!user?.id) throw new Error(user?.message || "Error en el registro");
       const tecnico = await api.createTecnico(
         {
           usuarioId: user.id,

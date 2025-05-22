@@ -15,6 +15,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ListadoPedidos } from "./features/cliente/ListadoPedidos";
 import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
 import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
+import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
 
 function App() {
   const themeOptions = {
@@ -55,6 +56,10 @@ function App() {
               element={<PedidoCandidatos />}
             />
             <Route path="/tecnico/:id/perfil" element={<TecnicoPerfil />} />
+            <Route
+              path="/tecnico/pedidos-disponibles"
+              element={<PedidosDisponibles />}
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
