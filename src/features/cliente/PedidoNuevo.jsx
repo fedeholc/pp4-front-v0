@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormLabel from "@mui/material/FormLabel";
-import { useNavigate } from "react-router";
 import * as api from "../../api";
 import "@src/App.css";
 import { Layout } from "../../components/Layout";
@@ -37,7 +36,6 @@ import {
 } from "@mui/icons-material";
 
 export function PedidoNuevo() {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     requerimiento: "",
@@ -308,16 +306,6 @@ export function PedidoNuevo() {
                 Tu solicitud ha sido enviada exitosamente. Te avisaremos cuando
                 haya candidatos para atender tu pedido.
               </Alert>
-              <Button
-                className="button"
-                size="large"
-                variant="outlined"
-                onClick={() => navigate("/login")}
-                sx={{ borderRadius: 2, fontWeight: 600 }}
-                startIcon={<Assignment color="primary" />}
-              >
-                Iniciar Sesión
-              </Button>
             </Stack>
           )}
         </Stack>
