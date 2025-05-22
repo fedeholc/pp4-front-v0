@@ -10,6 +10,8 @@ import {
   Group,
   Person,
   Star,
+  Email, // Added
+  Phone, // Added
 } from "@mui/icons-material";
 import {
   Alert,
@@ -48,6 +50,7 @@ export function PedidoCard({ pedido, displayButtons }) {
   const [candidatosDisabled, setCandidatosDisabled] = useState(true);
   const [isPedidoCancelled, setIsPedidoCancelled] = useState(false);
   const [isCalificando, setIsCalificando] = useState(false);
+  const [showTecnicoDetails, setShowTecnicoDetails] = useState(false); // Added state
 
   useEffect(() => {
     if (!pedido) return null;
@@ -248,11 +251,52 @@ export function PedidoCard({ pedido, displayButtons }) {
             <Person fontSize="small" color="primary" />
             <Typography variant="body2">
               <b>Técnico:</b>{" "}
-              {pedido.tecnico
-                ? `${pedido.tecnico.nombre} ${pedido.tecnico.apellido}`
-                : "No asignado"}
+              {pedido.tecnico ? (
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => setShowTecnicoDetails((prev) => !prev)}
+                  sx={{
+                    textTransform: "none",
+                    p: 0,
+                    minWidth: 0,
+                    fontWeight: "inherit",
+                    color: "inherit",
+                    "&:hover": { backgroundColor: "transparent" },
+                  }}
+                  aria-expanded={showTecnicoDetails}
+                  aria-controls="tecnico-details-collapse"
+                >
+                  {`${pedido.tecnico.nombre} ${pedido.tecnico.apellido}`}
+                  {showTecnicoDetails ? (
+                    <ExpandLess sx={{ ml: 0.5 }} />
+                  ) : (
+                    <ExpandMore sx={{ ml: 0.5 }} />
+                  )}
+                </Button>
+              ) : (
+                "No asignado"
+              )}
             </Typography>
           </Stack>
+          {pedido.tecnico && (
+            <Collapse
+              in={showTecnicoDetails}
+              timeout="auto"
+              unmountOnExit
+              id="tecnico-details-collapse"
+            >
+              <Stack spacing={1} pl={4} mt={1} mb={1}>
+                
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Phone fontSize="small" color="action" />
+                  <Typography variant="body2">
+                    {pedido.tecnico.telefono || "No disponible"}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Collapse>
+          )}
           <Stack direction="row" alignItems="center" spacing={1}>
             <Star fontSize="small" color="warning" />
             <Typography variant="body2">
