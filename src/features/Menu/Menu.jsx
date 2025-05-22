@@ -25,8 +25,18 @@ export function Menu() {
     return (
       <Paper
         className="gradientBackground"
+        elevation={4}
         variant="outlined"
-        sx={{ padding: "2rem" }}
+        sx={{
+          p: 5,
+          borderRadius: 4,
+          minWidth: { xs: 320, sm: 400 },
+          background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+          boxShadow: 1,
+          border: "1px solid #e0e0e0",
+          position: "relative",
+          overflow: "hidden",
+        }}
       >
         <Container maxWidth="sm">
           <Grid
@@ -107,8 +117,18 @@ export function Menu() {
     return (
       <Paper
         className="gradientBackground"
+        elevation={4}
         variant="outlined"
-        sx={{ padding: "2rem" }}
+        sx={{
+          p: 5,
+          borderRadius: 4,
+          minWidth: { xs: 320, sm: 400 },
+          background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+          boxShadow: 1,
+          border: "1px solid #e0e0e0",
+          position: "relative",
+          overflow: "hidden",
+        }}
       >
         <Container maxWidth="sm">
           <Grid
@@ -126,8 +146,13 @@ export function Menu() {
                 spacing={1}
               >
                 <Toolbox size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
-                  Ver servicios solicitados
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/tecnico/pedidos-disponibles")}
+                >
+                  Ver pedidos disponibles
                 </Button>
               </Stack>
             </Grid>

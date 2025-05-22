@@ -12,6 +12,17 @@ export default defineConfig({
     jsxInject: `import React from 'react'`,
   },
   assetsInclude: ["**/*.ttf", "**/*.woff", "**/*.woff2"],
+  server: {
+    hmr: {
+      overlay: true, // Muestra errores como overlay
+    },
+    watch: {
+      usePolling: true, // Ayuda con problemas de detección de cambios en algunos sistemas
+    },
+  },
+  optimizeDeps: {
+    force: true, // Fuerza a reconstruir dependencias optimizadas en cada inicio
+  },
   resolve: {
     alias: {
       // Define tus aliases aquí
