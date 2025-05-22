@@ -19,7 +19,9 @@ import {
   Divider,
   IconButton,
   Paper,
+  Rating,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
@@ -37,11 +39,15 @@ export function PedidoCard({ pedido, displayButtons }) {
   const { token } = useContext(UserContext);
   const navigate = useNavigate();
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
+  const [showCalificacion, setShowCalificacion] = useState(false);
+  const [calificacionValue, setCalificacionValue] = useState(0);
+  const [comentarioCalificacion, setComentarioCalificacion] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState("");
   const [cancelDisabled, setCancelDisabled] = useState(true);
   const [candidatosDisabled, setCandidatosDisabled] = useState(true);
   const [isPedidoCancelled, setIsPedidoCancelled] = useState(false);
+  const [isCalificando, setIsCalificando] = useState(false);
 
   useEffect(() => {
     if (!pedido) return null;
@@ -86,13 +92,52 @@ export function PedidoCard({ pedido, displayButtons }) {
         token
       );
       if (response) {
-        setSuccess(true);
+        setSuccess("Pedido cancelado con éxito.");
         setError(null);
       }
     } catch (error) {
       console.log("Error al cancelar el pedido:", error);
       setCancelDisabled(false);
       setError("Error al cancelar el pedido. Inténtalo más tarde.");
+    }
+  }
+
+  async function handleCalificarTecnico() {
+    if (calificacionValue === 0) {
+      setError("Por favor selecciona una calificación");
+      return;
+    }
+
+    try {
+      setIsCalificando(true);
+      setError("");
+
+      const pedidoActualizado = {
+        ...pedido,
+        calificacion: calificacionValue,
+        comentario: comentarioCalificacion.trim() || null,
+        estado: PedidoEstadoEnum.enum.calificado,
+      };
+
+      const response = await api.updatePedido(
+        pedido.id,
+        pedidoActualizado,
+        token
+      );
+
+      if (response) {
+        setSuccess("Calificación guardada con éxito");
+        setShowCalificacion(false);
+        // Actualizar el pedido local para reflejar los cambios
+        pedido.calificacion = calificacionValue;
+        pedido.comentario = comentarioCalificacion.trim() || null;
+        pedido.estado = PedidoEstadoEnum.enum.calificado;
+      }
+    } catch (error) {
+      console.log("Error al calificar técnico:", error);
+      setError("Error al guardar la calificación. Inténtalo más tarde.");
+    } finally {
+      setIsCalificando(false);
     }
   }
   return (
@@ -263,6 +308,7 @@ export function PedidoCard({ pedido, displayButtons }) {
               color="warning"
               startIcon={<Star />}
               sx={{ borderRadius: 2, fontWeight: 600 }}
+              onClick={() => setShowCalificacion(!showCalificacion)}
             >
               Calificar Técnico
             </Button>
@@ -279,6 +325,85 @@ export function PedidoCard({ pedido, displayButtons }) {
               Cancelar Pedido
             </Button>
           </Stack>
+
+          {/* Sección de calificación */}
+          <Collapse in={showCalificacion} timeout="auto" unmountOnExit>
+            <Box
+              mt={3}
+              p={3}
+              sx={{
+                backgroundColor: "rgba(255, 193, 7, 0.05)",
+                borderRadius: 2,
+                border: "1px solid rgba(255, 193, 7, 0.2)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <Star color="warning" />
+                Calificar a {pedido.tecnico?.nombre} {pedido.tecnico?.apellido}
+              </Typography>
+
+              <Stack spacing={3}>
+                <Box>
+                  <Typography variant="body2" gutterBottom fontWeight={600}>
+                    Calificación *
+                  </Typography>
+                  <Rating
+                    value={calificacionValue}
+                    onChange={(event, newValue) => {
+                      setCalificacionValue(newValue || 0);
+                    }}
+                    size="large"
+                    precision={1}
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="body2" gutterBottom fontWeight={600}>
+                    Comentario (opcional)
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={3}
+                    fullWidth
+                    placeholder="Comparte tu experiencia con el técnico..."
+                    value={comentarioCalificacion}
+                    onChange={(e) => setComentarioCalificacion(e.target.value)}
+                    variant="outlined"
+                    sx={{ backgroundColor: "white" }}
+                  />
+                </Box>
+
+                <Stack direction="row" spacing={2} justifyContent="flex-end">
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setShowCalificacion(false);
+                      setCalificacionValue(0);
+                      setComentarioCalificacion("");
+                      setError("");
+                    }}
+                    disabled={isCalificando}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={handleCalificarTecnico}
+                    disabled={isCalificando || calificacionValue === 0}
+                    startIcon={<Star />}
+                  >
+                    {isCalificando ? "Guardando..." : "Guardar Calificación"}
+                  </Button>
+                </Stack>
+              </Stack>
+            </Box>
+          </Collapse>
+
           {error && (
             <Box mt={2}>
               <Alert severity="error">{error}</Alert>
@@ -286,7 +411,7 @@ export function PedidoCard({ pedido, displayButtons }) {
           )}
           {success && (
             <Box mt={2}>
-              <Alert severity="success">Pedido cancelado con éxito.</Alert>
+              <Alert severity="success">{success}</Alert>
             </Box>
           )}
         </>
