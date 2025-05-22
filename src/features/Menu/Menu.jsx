@@ -105,36 +105,61 @@ export function Menu() {
   }
   function MenuTecnico() {
     return (
-      <Card className="card" sx={{ padding: "2rem" }}>
-        <Toolbox size={60} weight="duotone" />
-        <Button className="button" size="large" variant="contained">
-          Ver servicios solicitados
-        </Button>
-
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          spacing={4}
-        >
-          <MoneyWavy size={60} weight="duotone" />
-          <Button className="button" size="large" variant="contained">
-            Pagar membresía
-          </Button>
-        </Stack>
-
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          spacing={4}
-        >
-          <FileMagnifyingGlass size={60} weight="duotone" />
-          <Button className="button" size="large" variant="contained">
-            Ver historial de servicios
-          </Button>
-        </Stack>
-      </Card>
+      <Paper
+        className="gradientBackground"
+        variant="outlined"
+        sx={{ padding: "2rem" }}
+      >
+        <Container maxWidth="sm">
+          <Grid
+            container
+            alignContent={"center"}
+            justifyContent={"center"}
+            spacing={4}
+            columns={{ xs: 1, sm: 2 }}
+          >
+            <Grid>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Toolbox size={60} weight="duotone" />
+                <Button className="button" size="large" variant="contained">
+                  Ver servicios solicitados
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <MoneyWavy size={60} weight="duotone" />
+                <Button className="button" size="large" variant="contained">
+                  Pagar membresía
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <FileMagnifyingGlass size={60} weight="duotone" />
+                <Button className="button" size="large" variant="contained">
+                  Ver historial de servicios
+                </Button>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Container>
+      </Paper>
     );
   }
 
