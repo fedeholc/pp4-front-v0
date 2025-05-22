@@ -8,7 +8,7 @@ import {
   MenuItem,
   Select,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
@@ -59,17 +59,11 @@ export function ListadoPedidos() {
   return (
     <Layout>
       <Container maxWidth="md" sx={{ height: "100%" }}>
-        <Box padding={4}>
-          {loading && !error && <Typography>Cargando pedidos...</Typography>}
-          {error && <Alert severity="error">{error}</Alert>}
-          {success && pedidos.length === 0 && (
-            <Alert severity="info">No tienes pedidos realizados.</Alert>
-          )}
-        </Box>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography paddingTop={4} variant="h4" component="h1" gutterBottom>
           Mis Pedidos
         </Typography>
         <Divider></Divider>
+
         <Stack
           flexDirection={"row"}
           flexWrap={"wrap"}
@@ -99,6 +93,14 @@ export function ListadoPedidos() {
             </Select>
           </FormControl>
         </Stack>
+
+        <Box padding={4}>
+          {loading && !error && <Typography>Cargando pedidos...</Typography>}
+          {error && <Alert severity="error">{error}</Alert>}
+          {success && pedidos.length === 0 && (
+            <Alert severity="info">No tienes pedidos realizados.</Alert>
+          )}
+        </Box>
         {pedidosFiltrados.length > 0 && (
           <Box>
             {pedidosFiltrados.map((pedido) => (
