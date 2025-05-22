@@ -63,7 +63,7 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/cliente/nuevo-pedido")}
                 >
-                  Solicitar servicio técnico
+                  Solicitar servicio
                 </Button>
               </Stack>
             </Grid>
@@ -76,7 +76,7 @@ export function Menu() {
               >
                 <ReceiptX size={60} weight="duotone" />
                 <Button className="button" size="large" variant="contained">
-                  Cancelar servicio
+                  Cancelar pedido
                 </Button>
               </Stack>
             </Grid>
@@ -94,7 +94,7 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/cliente/pedidos")}
                 >
-                  Historial de servicios
+                  Mis pedidos
                 </Button>
               </Stack>
             </Grid>
