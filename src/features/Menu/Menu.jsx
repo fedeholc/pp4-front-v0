@@ -7,12 +7,14 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { UserContext } from "../../contexts/UserContext";
 import { Layout } from "../../components/Layout";
+import WorkTwoToneIcon from "@mui/icons-material/WorkTwoTone";
 import {
   Toolbox,
   MoneyWavy,
   ReceiptX,
   FileMagnifyingGlass,
   StarHalf,
+  Wrench,
 } from "@phosphor-icons/react";
 import { Container, Paper } from "@mui/material";
 import { useNavigate } from "react-router";
@@ -43,10 +45,11 @@ export function Menu() {
             container
             alignContent={"center"}
             justifyContent={"center"}
+            alignItems={"center"}
             spacing={4}
             columns={{ xs: 1, sm: 2 }}
           >
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -64,7 +67,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -77,7 +80,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -91,11 +94,11 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/cliente/pedidos")}
                 >
-                  Ver historial de servicios
+                  Historial de servicios
                 </Button>
               </Stack>
             </Grid>
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -135,10 +138,11 @@ export function Menu() {
             container
             alignContent={"center"}
             justifyContent={"center"}
+            alignItems={"center"}
             spacing={4}
             columns={{ xs: 1, sm: 2 }}
           >
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -156,7 +160,21 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid>
+            <Grid size={1}>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Wrench size={60} weight="duotone" />
+
+                <Button className="button" size="large" variant="contained">
+                  Pedidos Activos
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -169,7 +187,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid>
+            <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -178,7 +196,7 @@ export function Menu() {
               >
                 <FileMagnifyingGlass size={60} weight="duotone" />
                 <Button className="button" size="large" variant="contained">
-                  Ver historial de servicios
+                  Historial de servicios
                 </Button>
               </Stack>
             </Grid>
