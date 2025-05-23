@@ -15,7 +15,7 @@ import { PEDIDO_ESTADOS_TEXTO } from "../../../types/const";
 import { PedidoEstadoEnum, PedidoSchema } from "../../../types/schemas";
 import * as api from "../../api";
 import { Layout } from "../../components/Layout";
-import { PedidoCard } from "../../components/PedidoCard";
+import { PedidoCardCliente } from "../../components/PedidoCardCliente";
 import { UserContext } from "../../contexts/UserContext";
 import { PedidoDisponibleCard } from "../../components/PedidoDisponibleCard";
 

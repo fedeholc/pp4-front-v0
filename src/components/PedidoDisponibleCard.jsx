@@ -152,7 +152,7 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
           <Stack direction="row" alignItems="center" spacing={1}>
             <Person fontSize="small" color="primary" />
             <Typography variant="body2">
-              <b>Usuario solicitante:</b> {pedido.cliente.apellido},{" "}
+              <b>Cliente solicitante:</b> {pedido.cliente.apellido},{" "}
               {pedido.cliente.nombre}
             </Typography>
           </Stack>

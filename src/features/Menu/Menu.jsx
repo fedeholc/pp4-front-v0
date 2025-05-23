@@ -169,8 +169,13 @@ export function Menu() {
               >
                 <Wrench size={60} weight="duotone" />
 
-                <Button className="button" size="large" variant="contained">
-                  Pedidos Activos
+                <Button
+                  className="button"
+                  size="large"
+                  onClick={() => navigate("/tecnico/mis-pedidos")}
+                  variant="contained"
+                >
+                  Mis Pedidos
                 </Button>
               </Stack>
             </Grid>

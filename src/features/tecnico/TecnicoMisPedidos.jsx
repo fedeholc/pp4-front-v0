@@ -17,8 +17,9 @@ import * as api from "../../api";
 import { Layout } from "../../components/Layout";
 import { PedidoCardCliente } from "../../components/PedidoCardCliente";
 import { UserContext } from "../../contexts/UserContext";
+import { PedidoCardTecnico } from "../../components/PedidoCardTecnico";
 
-export function ListadoPedidos() {
+export function TecnicoMisPedidos() {
   const { token, user } = useContext(UserContext);
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,7 @@ export function ListadoPedidos() {
     }
 
     api
-      .getPedidos(token, { clienteId: user.cliente.id })
+      .getPedidos(token, { tecnicoId: user.tecnico.id })
       .then((data) => {
         setLoading(false);
         setSuccess(true);
@@ -48,7 +49,7 @@ export function ListadoPedidos() {
         setError("Error al cargar los pedidos. Inténtalo más tarde.");
         setSuccess(false);
       });
-  }, [token, user.cliente.id]);
+  }, [token, user.tecnico.id]);
 
   // Filtrar pedidos según el estado seleccionado
   const pedidosFiltrados = filter
@@ -105,7 +106,7 @@ export function ListadoPedidos() {
           <Box>
             {pedidosFiltrados.map((pedido) => (
               <span key={pedido.id}>
-                <PedidoCardCliente pedido={pedido} displayButtons={true} />
+                <PedidoCardTecnico pedido={pedido} displayButtons={true} />
               </span>
             ))}
           </Box>

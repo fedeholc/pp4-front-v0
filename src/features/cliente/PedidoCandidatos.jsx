@@ -12,7 +12,7 @@ import { useParams } from "react-router";
 import * as api from "../../api";
 import { CandidatoCard } from "../../components/CandidatoCard";
 import { Layout } from "../../components/Layout";
-import { PedidoCard } from "../../components/PedidoCard";
+import { PedidoCardCliente } from "../../components/PedidoCardCliente";
 import { UserContext } from "../../contexts/UserContext";
 import { Person, CheckCircle } from "@mui/icons-material";
 import { PedidoEstadoEnum } from "../../../types/schemas";
@@ -90,7 +90,7 @@ export function PedidoCandidatos() {
           <>
             <Box>
               <span key={pedido.id}>
-                <PedidoCard pedido={pedido} displayButtons={false} />
+                <PedidoCardCliente pedido={pedido} displayButtons={false} />
               </span>
             </Box>
           </>
