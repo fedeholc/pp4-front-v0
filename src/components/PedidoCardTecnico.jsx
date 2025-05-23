@@ -19,12 +19,15 @@ import {
   IconButton,
   Paper,
   Stack,
+  TextField, // Added TextField
   Typography,
 } from "@mui/material";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router"; // Removed unused import
 import { PEDIDO_ESTADOS_TEXTO } from "../../types/const";
 import { UserContext } from "../contexts/UserContext";
+import * as api from "../api"; // Added api import
+import { PedidoEstadoEnum } from "../../types/schemas"; // Added PedidoEstadoEnum import
 /**
  * @param {Object} props
  * @param {import("../../types").PedidoCompleto} props.pedido
@@ -34,15 +37,53 @@ export function PedidoCardTecnico({ pedido, displayButtons }) {
   const { token } = useContext(UserContext);
 
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
+  const [showResponderForm, setShowResponderForm] = useState(false); // New state
+  const [respuestaTecnico, setRespuestaTecnico] = useState(""); // New state
+  const [isRespondiendo, setIsRespondiendo] = useState(false); // New state
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   if (!pedido) return null;
 
-  let responderDisabled = true;
-  if (pedido.calificacion && !pedido.respuesta) {
-    responderDisabled = false;
+  const responderDisabled = !(pedido.calificacion && !pedido.respuesta);
+
+  async function handleGuardarRespuesta() {
+    if (!respuestaTecnico.trim()) {
+      setError("Por favor ingresa una respuesta.");
+      return;
+    }
+    try {
+      setIsRespondiendo(true);
+      setError("");
+      setSuccess("");
+
+      const pedidoActualizado = {
+        ...pedido,
+        respuesta: respuestaTecnico.trim(),
+        // Consider if PedidoEstadoEnum.Enum.finalizado or another state is more appropriate
+        // estado: PedidoEstadoEnum.Enum.calificado, // Or a new state like 'respondido'
+      };
+
+      const response = await api.updatePedido(
+        pedido.id,
+        pedidoActualizado,
+        token
+      );
+
+      if (response) {
+        setSuccess("Respuesta guardada con éxito.");
+        setShowResponderForm(false);
+        // Update local pedido state to reflect the change
+        // This will also re-evaluate `responderDisabled` correctly
+        pedido.respuesta = respuestaTecnico.trim();
+      }
+    } catch (err) {
+      console.error("Error al guardar la respuesta:", err);
+      setError("Error al guardar la respuesta. Inténtalo más tarde.");
+    } finally {
+      setIsRespondiendo(false);
+    }
   }
 
   return (
@@ -191,10 +232,79 @@ export function PedidoCardTecnico({ pedido, displayButtons }) {
               color="warning"
               startIcon={<Star />}
               sx={{ borderRadius: 2, fontWeight: 600 }}
+              onClick={() => setShowResponderForm(!showResponderForm)}
             >
-              Responder calficación
+              {showResponderForm ? "Cancelar" : "Responder Calificación"}
             </Button>
           </Stack>
+
+          {/* Sección de Respuesta del Técnico */}
+          <Collapse in={showResponderForm} timeout="auto" unmountOnExit>
+            <Box
+              mt={3}
+              p={3}
+              sx={{
+                backgroundColor: "rgba(0, 123, 255, 0.05)",
+                borderRadius: 2,
+                border: "1px solid rgba(0, 123, 255, 0.2)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <Comment color="primary" />
+                Responder al Comentario del Cliente
+              </Typography>
+
+              <Stack spacing={3}>
+                <Box>
+                  <Typography variant="body2" gutterBottom fontWeight={600}>
+                    Tu Respuesta *
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={3}
+                    fullWidth
+                    placeholder="Escribe tu respuesta al cliente..."
+                    value={respuestaTecnico}
+                    onChange={(e) => setRespuestaTecnico(e.target.value)}
+                    variant="outlined"
+                    sx={{ backgroundColor: "white" }}
+                    disabled={isRespondiendo}
+                  />
+                </Box>
+
+                <Stack direction="row" spacing={2} justifyContent="flex-end">
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setShowResponderForm(false);
+                      setRespuestaTecnico("");
+                      setError("");
+                    }}
+                    disabled={isRespondiendo}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleGuardarRespuesta}
+                    disabled={
+                      isRespondiendo ||
+                      !respuestaTecnico.trim() ||
+                      !!pedido.respuesta
+                    }
+                    startIcon={<CheckCircle />}
+                  >
+                    {isRespondiendo ? "Guardando..." : "Guardar Respuesta"}
+                  </Button>
+                </Stack>
+              </Stack>
+            </Box>
+          </Collapse>
 
           {error && (
             <Box mt={2}>
