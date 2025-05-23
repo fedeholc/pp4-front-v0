@@ -37,7 +37,7 @@ import { UserContext } from "../contexts/UserContext";
  * @param {import("../../types").PedidoCompleto} props.pedido
  * @param {boolean} props.displayButtons
  */
-export function PedidoCard({ pedido, displayButtons }) {
+export function PedidoCardCliente({ pedido, displayButtons }) {
   const { token } = useContext(UserContext);
   const navigate = useNavigate();
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
@@ -287,7 +287,6 @@ export function PedidoCard({ pedido, displayButtons }) {
               id="tecnico-details-collapse"
             >
               <Stack spacing={1} pl={4} mt={1} mb={1}>
-                
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Phone fontSize="small" color="action" />
                   <Typography variant="body2">

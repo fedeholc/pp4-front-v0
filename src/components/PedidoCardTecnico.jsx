@@ -21,63 +21,30 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import { PEDIDO_ESTADOS_TEXTO } from "../../types/const";
-import * as api from "../api";
 import { UserContext } from "../contexts/UserContext";
 /**
  * @param {Object} props
  * @param {import("../../types").PedidoCompleto} props.pedido
  * @param {boolean} props.displayButtons
- * @param {function} props.setPedidos
  */
-export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
-  const { token, user } = useContext(UserContext);
+export function PedidoCardTecnico({ pedido, displayButtons }) {
+  const { token } = useContext(UserContext);
 
   const [showDisponibilidad, setShowDisponibilidad] = useState(false);
+
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [postularDisabled, setPostularDisabled] = useState(false);
-
-  useEffect(() => {
-    if (!pedido) return null;
-
-    if (pedido.candidatos.find((c) => c.tecnicoId === user.tecnico.id)) {
-      setPostularDisabled(true);
-    }
-  }, [pedido, postularDisabled, user.tecnico.id]);
+  const [success, setSuccess] = useState("");
 
   if (!pedido) return null;
 
-  async function handlePostularPedido(id) {
-    try {
-      setPostularDisabled(true);
-
-      let response = await api.createPedidoCandidato(
-        { tecnicoId: user.tecnico.id, pedidoId: id },
-        token
-      );
-      setPedidos((prev) =>
-        prev.map((p) => {
-          if (p.id === id) {
-            return {
-              ...p,
-              candidatos: [...p.candidatos, { tecnicoId: user.tecnico.id }],
-            };
-          }
-          return p;
-        })
-      );
-      if (response) {
-        setSuccess(true);
-        setError(null);
-      }
-    } catch (error) {
-      console.log("Error al postuarlse al pedido:", error);
-      setPostularDisabled(false);
-      setError("Error al postularse al pedido. Inténtalo más tarde.");
-    }
+  let responderDisabled = true;
+  if (pedido.calificacion && !pedido.respuesta) {
+    responderDisabled = false;
   }
+
   return (
     <Paper
       className="gradientBackground"
@@ -135,27 +102,6 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
               <b>Requerimiento:</b> {pedido.requerimiento}
             </Typography>
           </Stack>
-        </Stack>
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{ display: { xs: "none", sm: "block" } }}
-        />
-        <Stack spacing={2} flex={2}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Group fontSize="small" color="primary" />
-            <Typography variant="body2">
-              <b>Candidatos:</b> {pedido.candidatos.length}
-            </Typography>
-          </Stack>
-
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Person fontSize="small" color="primary" />
-            <Typography variant="body2">
-              <b>Cliente solicitante:</b> {pedido.cliente.apellido},{" "}
-              {pedido.cliente.nombre}
-            </Typography>
-          </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <AccessTime fontSize="small" color="action" />
             <Typography variant="body2">
@@ -191,6 +137,41 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
             ))}
           </Collapse>
         </Stack>
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ display: { xs: "none", sm: "block" } }}
+        />
+        <Stack spacing={2} flex={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Person fontSize="small" color="primary" />
+            <Typography variant="body2">
+              <b>Cliente solicitante:</b> {pedido.cliente.apellido},{" "}
+              {pedido.cliente.nombre}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Star fontSize="small" color="warning" />
+            <Typography variant="body2">
+              <b>Tu calificación:</b>{" "}
+              {pedido.calificacion ? pedido.calificacion : "No calificado"}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Comment fontSize="small" color="secondary" />
+            <Typography variant="body2">
+              <b>Comentario del cliente:</b>{" "}
+              {pedido.comentario ? pedido.comentario : "No hay comentario"}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Comment fontSize="small" color="success" />
+            <Typography variant="body2">
+              <b>Tu respuesta:</b>{" "}
+              {pedido.respuesta ? pedido.respuesta : "No hay respuesta"}
+            </Typography>
+          </Stack>
+        </Stack>
       </Stack>
       {displayButtons && (
         <>
@@ -203,18 +184,18 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
             mt={2}
           >
             <Button
-              size="medium"
               className="button"
-              disabled={postularDisabled}
+              disabled={responderDisabled}
               variant="contained"
-              color="secondary"
+              size="medium"
+              color="warning"
               startIcon={<Star />}
               sx={{ borderRadius: 2, fontWeight: 600 }}
-              onClick={() => handlePostularPedido(pedido.id)}
             >
-              {postularDisabled ? "Ya estás postulado" : "Postularme"}
+              Responder calficación
             </Button>
           </Stack>
+
           {error && (
             <Box mt={2}>
               <Alert severity="error">{error}</Alert>
@@ -222,7 +203,7 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
           )}
           {success && (
             <Box mt={2}>
-              <Alert severity="success">Postulación realizada con éxito.</Alert>
+              <Alert severity="success">{success}</Alert>
             </Box>
           )}
         </>

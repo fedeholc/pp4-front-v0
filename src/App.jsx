@@ -16,6 +16,7 @@ import { ListadoPedidos } from "./features/cliente/ListadoPedidos";
 import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
 import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
 import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
+import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
 
 function App() {
   const themeOptions = {
@@ -59,6 +60,10 @@ function App() {
             <Route
               path="/tecnico/pedidos-disponibles"
               element={<PedidosDisponibles />}
+            />
+            <Route
+              path="/tecnico/mis-pedidos"
+              element={<TecnicoMisPedidos />}
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
