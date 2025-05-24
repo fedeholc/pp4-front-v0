@@ -66,8 +66,9 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
       }
     }
 
+    
     if (
-      pedido.estado === "con_candidatos" &&
+      pedido.estado === PedidoEstadoEnum.Enum.con_candidatos &&
       pedido.candidatos &&
       pedido.candidatos.length > 0 &&
       isPedidoCancelled === false
