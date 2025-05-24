@@ -25,6 +25,7 @@ import { useContext, useEffect, useState } from "react";
 import { PEDIDO_ESTADOS_TEXTO } from "../../types/const";
 import * as api from "../api";
 import { UserContext } from "../contexts/UserContext";
+import { PedidoEstadoEnum } from "../../types/schemas";
 /**
  * @param {Object} props
  * @param {import("../../types").PedidoCompleto} props.pedido
@@ -63,12 +64,25 @@ export function PedidoDisponibleCard({ pedido, displayButtons, setPedidos }) {
             return {
               ...p,
               candidatos: [...p.candidatos, { tecnicoId: user.tecnico.id }],
+              estado: PedidoEstadoEnum.Enum.con_candidatos,
             };
           }
           return p;
         })
       );
-      if (response) {
+
+      // Guardar también en la base de datos
+      const updateResponse = await api.updatePedido(
+        id,
+        {
+          ...pedido,
+          estado: PedidoEstadoEnum.Enum.con_candidatos,
+        },
+        token
+      );
+
+      if (response && updateResponse) {
+        setPostularDisabled(true);
         setSuccess(true);
         setError(null);
       }
