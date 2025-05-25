@@ -13,6 +13,10 @@ import { PedidoNuevo } from "./features/cliente/PedidoNuevo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ListadoPedidos } from "./features/cliente/ListadoPedidos";
+import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
+import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
+import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
+import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
 
 function App() {
   const themeOptions = {
@@ -48,7 +52,19 @@ function App() {
             <Route path="/register/tecnico" element={<RegisterTecnico />} />
             <Route path="/cliente/nuevo-pedido" element={<PedidoNuevo />} />
             <Route path="/cliente/pedidos" element={<ListadoPedidos />} />
-
+            <Route
+              path="/cliente/pedidos/:pedidoId/candidatos"
+              element={<PedidoCandidatos />}
+            />
+            <Route path="/tecnico/:id/perfil" element={<TecnicoPerfil />} />
+            <Route
+              path="/tecnico/pedidos-disponibles"
+              element={<PedidosDisponibles />}
+            />
+            <Route
+              path="/tecnico/mis-pedidos"
+              element={<TecnicoMisPedidos />}
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

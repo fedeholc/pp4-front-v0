@@ -13,6 +13,7 @@ import * as api from "../../api";
 import "@src/App.css";
 import { Layout } from "../../components/Layout";
 import { Paper } from "@mui/material";
+import { Person, Email, Lock, Phone, Home } from "@mui/icons-material";
 
 export function RegisterCliente() {
   const navigate = useNavigate();
@@ -74,18 +75,33 @@ export function RegisterCliente() {
           sx={{ padding: "1rem 2rem 2rem 2rem", height: "100%" }}
         >
           <Box p={1}>
-            <Typography variant="h4" fontWeight="bold">
+            <Typography variant="h4" fontWeight="bold" gutterBottom>
               Registro como Cliente
             </Typography>
           </Box>
           <Paper
             className="gradientBackground"
+            elevation={4}
             variant="outlined"
-            sx={{ padding: "2rem", margin: 0, width: "100%" }}
+            sx={{
+              p: 3,
+              mb: 3,
+              borderRadius: 4,
+              background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+              boxShadow: 1,
+              border: "1px solid #e0e0e0",
+              position: "relative",
+              overflow: "hidden",
+              width: "100%",
+              maxWidth: 500,
+            }}
           >
             <form onSubmit={handleSubmit}>
-              <Stack direction="column" spacing={3}>
-                <FormLabel htmlFor="email">Email</FormLabel>
+              <Stack direction="column" gap={2}>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Email color="primary" />
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                </Stack>
                 <TextField
                   id="email"
                   name="email"
@@ -95,8 +111,12 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
-                <FormLabel htmlFor="password">Contraseña</FormLabel>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Lock color="primary" />
+                  <FormLabel htmlFor="password">Contraseña</FormLabel>
+                </Stack>
                 <TextField
                   id="password"
                   name="password"
@@ -106,8 +126,12 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
-                <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Person color="primary" />
+                  <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                </Stack>
                 <TextField
                   id="nombre"
                   name="nombre"
@@ -116,8 +140,12 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
-                <FormLabel htmlFor="apellido">Apellido</FormLabel>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Person color="primary" />
+                  <FormLabel htmlFor="apellido">Apellido</FormLabel>
+                </Stack>
                 <TextField
                   id="apellido"
                   name="apellido"
@@ -126,8 +154,12 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
-                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Phone color="primary" />
+                  <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                </Stack>
                 <TextField
                   id="telefono"
                   name="telefono"
@@ -136,8 +168,12 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
-                <FormLabel htmlFor="direccion">Dirección</FormLabel>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Home color="primary" />
+                  <FormLabel htmlFor="direccion">Dirección</FormLabel>
+                </Stack>
                 <TextField
                   id="direccion"
                   name="direccion"
@@ -146,28 +182,35 @@ export function RegisterCliente() {
                   onChange={handleChange}
                   required
                   size="medium"
+                  fullWidth
                 />
                 <Button
                   type="submit"
-                  sx={{ marginTop: "1rem" }}
+                  sx={{ marginTop: "1rem", borderRadius: 2, fontWeight: 600 }}
                   size="large"
                   variant="contained"
                   disabled={loading}
+                  fullWidth
+                  startIcon={<Person />}
                 >
                   Registrarme
                 </Button>
               </Stack>
             </form>
           </Paper>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" sx={{ width: "100%" }}>
+              {error}
+            </Alert>
+          )}
           {success && (
             <Stack
               direction="column"
               spacing={4}
               alignItems="center"
-              sx={{ marginTop: "1rem" }}
+              sx={{ marginTop: "1rem", width: "100%" }}
             >
-              <Alert severity="success">
+              <Alert severity="success" sx={{ width: "100%" }}>
                 Registro exitoso. Ya puedes iniciar sesión.
               </Alert>
               <Button
@@ -175,6 +218,8 @@ export function RegisterCliente() {
                 size="large"
                 variant="outlined"
                 onClick={() => navigate("/login")}
+                sx={{ borderRadius: 2, fontWeight: 600, width: "100%" }}
+                startIcon={<Lock />}
               >
                 Iniciar Sesión
               </Button>
