@@ -16,6 +16,7 @@ function getHeaders(token, isJson = true) {
 /**@typedef {import('../types').Area} Area */
 /**@typedef {import('../types').Usuario} Usuario */
 /**@typedef {import('../types').Tecnico} Tecnico */
+/**@typedef {import('../types').TecnicoCompleto} TecnicoCompleto */
 /**@typedef {import('../types').TecnicoArea} TecnicoArea */
 /**@typedef {import('../types').Pedido} Pedido */
 /**@typedef {import('../types').PedidoCandidato} PedidoCandidato */
@@ -432,7 +433,7 @@ export const getTecnicos = (token) =>
  * Obtener un técnico por ID
  * @param {number} id
  * @param {string} token
- * @returns {Promise<Tecnico>}
+ * @returns {Promise<TecnicoCompleto>}
  */
 export const getTecnico = (id, token) =>
   fetch(`${API_URL}/tecnicos/${id}`, { headers: getHeaders(token) }).then((r) =>
