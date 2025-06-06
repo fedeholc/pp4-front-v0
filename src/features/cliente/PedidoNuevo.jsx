@@ -70,7 +70,7 @@ export function PedidoNuevo() {
     try {
       const pedido = await api.createPedido(
         {
-          clienteId: 1, // Cambiar por el ID del cliente actual
+          clienteId: user.cliente.id, // Cambiar por el ID del cliente actual
           areaId: parseInt(selectedArea),
           requerimiento: form.requerimiento,
           estado: "sin_candidatos",
