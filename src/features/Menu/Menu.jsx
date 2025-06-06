@@ -200,8 +200,13 @@ export function Menu() {
                 spacing={1}
               >
                 <FileMagnifyingGlass size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
-                  Historial de servicios
+                <Button
+                  onClick={() => navigate(`/tecnico/${user.tecnico.id}/perfil`)}
+                  className="button"
+                  size="large"
+                  variant="contained"
+                >
+                  Ver Mi Perfil
                 </Button>
               </Stack>
             </Grid>
