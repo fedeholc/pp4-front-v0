@@ -118,8 +118,6 @@ export const UsuarioCompletoSchema = UsuarioSchema.extend({
   tecnico: TecnicoSchema.optional().nullable(),
 });
 
-
-
 export const CandidatoVistaSchema = PedidoCandidatoSchema.extend({
   nombre: z.string().nullable(),
   apellido: z.string().nullable(),
@@ -134,4 +132,37 @@ export const PedidoCompletoSchema = PedidoSchema.extend({
   area: AreaSchema.optional().nullable(),
   disponibilidad: z.array(PedidoDisponibilidadSchema).optional().nullable(),
   candidatos: z.array(CandidatoVistaSchema).optional().nullable(),
+});
+
+// PedidoTecnico - Schema para pedidos en la vista de técnico
+export const PedidoTecnicoSchema = z.object({
+  id: z.number().nullable(),
+  clienteId: z.number().nullable(),
+  tecnicoId: z.number().nullable(),
+  estado: PedidoEstadoEnum.nullable(),
+  areaId: z.number().nullable(),
+  requerimiento: z.string().nullable(),
+  calificacion: z.number().nullable(),
+  comentario: z.string().nullable(),
+  respuesta: z.string().nullable(),
+  fechaCreacion: z.coerce.date().nullable(),
+  fechaCierre: z.coerce.date().nullable(),
+  fechaCancelado: z.coerce.date().nullable(),
+  clienteNombre: z.string().nullable(),
+  clienteApellido: z.string().nullable(),
+  areaNombre: z.string().nullable(),
+});
+
+// AreaTecnico - Schema para áreas en la vista de técnico
+export const AreaTecnicoSchema = z.object({
+  tecnicoAreaId: z.number().nullable(),
+  areaId: z.number().nullable(),
+  nombre: z.string().nullable(),
+  descripcion: z.string().nullable(),
+});
+
+// TecnicoCompleto - Schema que extiende TecnicoSchema con pedidos y áreas
+export const TecnicoCompletoSchema = TecnicoSchema.extend({
+  pedidos: z.array(PedidoTecnicoSchema).optional().nullable(),
+  areas: z.array(AreaTecnicoSchema).optional().nullable(),
 });
