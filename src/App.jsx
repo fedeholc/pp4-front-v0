@@ -17,6 +17,7 @@ import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
 import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
 import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
 import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
+import { TecnicoFacturas } from "./features/tecnico/TecnicoFacturas";
 
 function App(props) {
   const themeOptions = {
@@ -69,6 +70,7 @@ function App(props) {
               path="/tecnico/mis-pedidos"
               element={<TecnicoMisPedidos />}
             />
+            <Route path="/tecnico/facturas" element={<TecnicoFacturas />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

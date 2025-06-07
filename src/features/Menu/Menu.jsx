@@ -67,7 +67,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-           {/*  <Grid size={1}>
+            {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -98,7 +98,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-           {/*  <Grid size={1}>
+            {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -187,7 +187,12 @@ export function Menu() {
                 spacing={1}
               >
                 <MoneyWavy size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
+                <Button
+                  className="button"
+                  size="large"
+                  onClick={() => navigate("/tecnico/facturas")}
+                  variant="contained"
+                >
                   Pagar membresía
                 </Button>
               </Stack>
