@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { BrowserRouter } from "react-router";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -167,35 +173,33 @@ describe("PedidoNuevo Component", () => {
     expect(diasSemana.length).toBe(7); // Verify all 7 days are shown
   });
 
+  const fillForm = async (requerimiento = "Test requerimiento") => {
+    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
+    await act(async () => {
+      fireEvent.change(textField, { target: { value: requerimiento } });
+    });
+    const selectButton = screen.getByLabelText(/Área de servicio/i);
+    await act(async () => {
+      fireEvent.mouseDown(selectButton);
+    });
+    await waitFor(() => {
+      const option = screen.getByText("Electricidad");
+      fireEvent.click(option);
+    });
+  };
+
   it("should submit form with valid data", async () => {
     renderWithRouterAndContext(<PedidoNuevo />);
-
-    // Wait for areas to load
     await waitFor(() => {
       expect(api.getAreas).toHaveBeenCalled();
     });
-
-    // Fill the requerimiento
-    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
-    fireEvent.change(textField, {
-      target: { value: "Instalar una toma eléctrica" },
-    });
-
-    // Select an area
-    const selectButton = screen.getByLabelText(/Área de servicio/i);
-    fireEvent.mouseDown(selectButton);
-
-    await waitFor(() => {
-      const electricidadOption = screen.getByText("Electricidad");
-      fireEvent.click(electricidadOption);
-    });
-
-    // Submit the form
+    await fillForm("Instalar una toma eléctrica");
     const submitButton = screen.getByRole("button", {
       name: /enviar solicitud/i,
     });
-    fireEvent.click(submitButton);
-
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
     await waitFor(() => {
       expect(api.createPedido).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -212,30 +216,16 @@ describe("PedidoNuevo Component", () => {
 
   it("should show success message after successful submission", async () => {
     renderWithRouterAndContext(<PedidoNuevo />);
-
-    // Wait for areas to load
     await waitFor(() => {
       expect(api.getAreas).toHaveBeenCalled();
     });
-
-    // Fill required fields
-    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
-    fireEvent.change(textField, { target: { value: "Test requerimiento" } });
-
-    const selectButton = screen.getByLabelText(/Área de servicio/i);
-    fireEvent.mouseDown(selectButton);
-
-    await waitFor(() => {
-      const option = screen.getByText("Electricidad");
-      fireEvent.click(option);
-    });
-
-    // Submit form
+    await fillForm();
     const submitButton = screen.getByRole("button", {
       name: /enviar solicitud/i,
     });
-    fireEvent.click(submitButton);
-
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
     await waitFor(() => {
       expect(
         screen.getByText(/Tu solicitud ha sido enviada exitosamente/i)
@@ -245,77 +235,44 @@ describe("PedidoNuevo Component", () => {
 
   it("should show error message when API call fails", async () => {
     vi.mocked(api.createPedido).mockRejectedValue(new Error("Network error"));
-
     renderWithRouterAndContext(<PedidoNuevo />);
-
-    // Wait for areas to load
     await waitFor(() => {
       expect(api.getAreas).toHaveBeenCalled();
     });
-
-    // Fill required fields
-    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
-    fireEvent.change(textField, { target: { value: "Test requerimiento" } });
-
-    const selectButton = screen.getByLabelText(/Área de servicio/i);
-    fireEvent.mouseDown(selectButton);
-
-    await waitFor(() => {
-      const option = screen.getByText("Electricidad");
-      fireEvent.click(option);
-    });
-
-    // Submit form
+    await fillForm();
     const submitButton = screen.getByRole("button", {
       name: /enviar solicitud/i,
     });
-    fireEvent.click(submitButton);
-
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
     await waitFor(() => {
       expect(screen.getByText(/Network error/i)).toBeInTheDocument();
     });
   });
 
   it("should disable submit button while loading", async () => {
-    // Make API call take some time
-    /**@type {() => void} */
     let resolveCreatePedido;
     const createPedidoPromise = new Promise((resolve) => {
       resolveCreatePedido = () => resolve({ id: 123 });
     });
     vi.mocked(api.createPedido).mockReturnValue(createPedidoPromise);
-
     renderWithRouterAndContext(<PedidoNuevo />);
-
-    // Wait for areas to load
     await waitFor(() => {
       expect(api.getAreas).toHaveBeenCalled();
     });
-
-    // Fill required fields
-    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
-    fireEvent.change(textField, { target: { value: "Test requerimiento" } });
-
-    const selectButton = screen.getByLabelText(/Área de servicio/i);
-    fireEvent.mouseDown(selectButton);
-
-    await waitFor(() => {
-      const option = screen.getByText("Electricidad");
-      fireEvent.click(option);
-    });
-
-    // Submit form
+    await fillForm();
     const submitButton = screen.getByRole("button", {
       name: /enviar solicitud/i,
     });
-    fireEvent.click(submitButton);
-
-    // Button should be disabled while loading
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
     await waitFor(() => {
       expect(submitButton).toBeDisabled();
     });
-
-    resolveCreatePedido();
+    // @ts-ignore
+    resolveCreatePedido && resolveCreatePedido();
   });
 
   it("should handle getAreas API failure gracefully", async () => {
@@ -334,37 +291,20 @@ describe("PedidoNuevo Component", () => {
 
   it("should call createPedidoDisponibilidad for availability data", async () => {
     renderWithRouterAndContext(<PedidoNuevo />);
-
-    // Wait for areas to load
     await waitFor(() => {
       expect(api.getAreas).toHaveBeenCalled();
     });
-
-    // Fill required fields
-    const textField = screen.getByLabelText(/Describe tu requerimiento/i);
-    fireEvent.change(textField, { target: { value: "Test requerimiento" } });
-
-    const selectButton = screen.getByLabelText(/Área de servicio/i);
-    fireEvent.mouseDown(selectButton);
-
-    await waitFor(() => {
-      const option = screen.getByText("Electricidad");
-      fireEvent.click(option);
-    });
-
-    // Submit form
+    await fillForm();
     const submitButton = screen.getByRole("button", {
       name: /enviar solicitud/i,
     });
-    fireEvent.click(submitButton);
-
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
     await waitFor(() => {
-      // Should call createPedido first
       expect(api.createPedido).toHaveBeenCalled();
     });
-
     await waitFor(() => {
-      // Should call createPedidoDisponibilidad for each day of the week
       expect(api.createPedidoDisponibilidad).toHaveBeenCalledTimes(7);
     });
   });

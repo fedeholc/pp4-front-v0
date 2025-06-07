@@ -1,29 +1,31 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  render,
-  screen,
-  waitFor,
-  fireEvent,
-  act,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router";
-import { ListadoPedidos } from "./ListadoPedidos";
+import { PedidosDisponibles } from "./PedidosDisponibles";
 import { UserContext } from "../../contexts/UserContext";
 
+// Mock de la API
 vi.mock("../../api", () => ({
   getPedidos: vi.fn(),
 }));
 import * as api from "../../api";
 
+// Mock del componente hijo para simplificar
+vi.mock("../../components/PedidoDisponibleCard", () => ({
+  PedidoDisponibleCard: ({ pedido }) => (
+    <div data-testid={`pedido-card-${pedido.id}`}>{pedido.requerimiento}</div>
+  ),
+}));
+
 const mockUser = {
-  cliente: {
-    id: 1,
-    nombre: "Juan",
-    apellido: "Pérez",
-    email: "juan@example.com",
+  tecnico: {
+    id: 10,
+    nombre: "Carlos",
+    apellido: "Gómez",
+    email: "carlos@example.com",
   },
 };
-const mockToken = "mock-token-123";
+const mockToken = "mock-token-tecnico";
 
 const renderWithContext = (
   component,
@@ -46,11 +48,11 @@ const renderWithContext = (
   );
 };
 
-describe("ListadoPedidos Component", () => {
+describe("PedidosDisponibles Component", () => {
   const mockPedidos = [
     {
       id: 1,
-      requerimiento: "Reparar luz",
+      requerimiento: "Reparar enchufe",
       estado: /** @type {"sin_candidatos"} */ ("sin_candidatos"),
       area: { id: 1, nombre: "Electricidad" },
       tecnicoId: null,
@@ -61,41 +63,45 @@ describe("ListadoPedidos Component", () => {
       calificacion: null,
       comentario: null,
       respuesta: null,
-      cliente: {
-        id: 1,
-        nombre: "Juan",
-        apellido: "Pérez",
-        telefono: "",
-        direccion: "",
-        fechaRegistro: new Date(),
-      },
+      cliente: null,
       disponibilidad: [],
-      clienteId: 1,
+      clienteId: 2,
       areaId: 1,
     },
     {
       id: 2,
       requerimiento: "Arreglar canilla",
-      estado: /** @type {"finalizado"} */ ("finalizado"),
+      estado: /** @type {"con_candidatos"} */ ("con_candidatos"),
       area: { id: 2, nombre: "Plomería" },
-      tecnicoId: 5,
+      tecnicoId: null,
       fechaRegistro: new Date(),
       fechaCreacion: new Date(),
       candidatos: [],
-      calificaciones: [5, 4],
+      calificaciones: [],
+      calificacion: null,
+      comentario: null,
+      respuesta: null,
+      cliente: null,
+      disponibilidad: [],
+      clienteId: 3,
+      areaId: 2,
+    },
+    {
+      id: 3,
+      requerimiento: "Instalar lámpara",
+      estado: /** @type {"finalizado"} */ ("finalizado"),
+      area: { id: 2, nombre: "Plomería" },
+      tecnicoId: 10,
+      fechaRegistro: new Date(),
+      fechaCreacion: new Date(),
+      candidatos: [],
+      calificaciones: [],
       calificacion: 5,
       comentario: "Trabajo excelente",
       respuesta: "Gracias!",
-      cliente: {
-        id: 1,
-        nombre: "Juan",
-        apellido: "Pérez",
-        telefono: "",
-        direccion: "",
-        fechaRegistro: new Date(),
-      },
+      cliente: null,
       disponibilidad: [],
-      clienteId: 1,
+      clienteId: 4,
       areaId: 2,
     },
   ];
@@ -106,13 +112,13 @@ describe("ListadoPedidos Component", () => {
   });
 
   it("muestra el estado de carga", async () => {
-    renderWithContext(<ListadoPedidos />);
+    renderWithContext(<PedidosDisponibles />);
     expect(screen.getByText(/Cargando pedidos/i)).toBeInTheDocument();
     await waitFor(() => expect(api.getPedidos).toHaveBeenCalled());
   });
 
   it("muestra mensaje de error si no hay token", async () => {
-    renderWithContext(<ListadoPedidos />, mockUser, null);
+    renderWithContext(<PedidosDisponibles />, mockUser, null);
     expect(
       await screen.findByText(/No estás autenticado/i)
     ).toBeInTheDocument();
@@ -120,44 +126,26 @@ describe("ListadoPedidos Component", () => {
 
   it("muestra mensaje de error si la API falla", async () => {
     vi.mocked(api.getPedidos).mockRejectedValue(new Error("API error"));
-    renderWithContext(<ListadoPedidos />);
+    renderWithContext(<PedidosDisponibles />);
     expect(
       await screen.findByText(/Error al cargar los pedidos/i)
     ).toBeInTheDocument();
   });
 
-  it("muestra mensaje si no hay pedidos", async () => {
+  it("muestra mensaje si no hay pedidos disponibles", async () => {
     vi.mocked(api.getPedidos).mockResolvedValue([]);
-    renderWithContext(<ListadoPedidos />);
+    renderWithContext(<PedidosDisponibles />);
     expect(
       await screen.findByText(/No tienes pedidos realizados/i)
     ).toBeInTheDocument();
   });
 
-  it("renderiza la lista de pedidos", async () => {
-    renderWithContext(<ListadoPedidos />);
-    expect(await screen.findByText(/Mis Pedidos/i)).toBeInTheDocument();
-    expect(screen.getByText(/Reparar luz/i)).toBeInTheDocument();
-    expect(screen.getByText(/Arreglar canilla/i)).toBeInTheDocument();
-  });
-
-  it("filtra los pedidos por estado", async () => {
-    renderWithContext(<ListadoPedidos />);
-    await screen.findByText(/Reparar luz/i);
-    const select = screen.getByLabelText(/Estado/i);
-    await act(async () => {
-      fireEvent.mouseDown(select);
-    });
-    // Buscar el MenuItem correcto (el de la lista desplegable, no el de la tarjeta)
-    const finalizadoOptions = screen.getAllByText(/Finalizado/i);
-    const menuOption = finalizadoOptions.find(
-      (el) => el.getAttribute("role") === "option"
-    );
-    await act(async () => {
-      fireEvent.click(menuOption || finalizadoOptions[0]);
-    });
-    // Solo debe aparecer el pedido finalizado
-    expect(screen.queryByText(/Reparar luz/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/Arreglar canilla/i)).toBeInTheDocument();
+  it("renderiza solo los pedidos disponibles (sin_candidatos y con_candidatos)", async () => {
+    renderWithContext(<PedidosDisponibles />);
+    await screen.findByText(/Pedidos disponibles/i);
+    // Deben aparecer los pedidos 1 y 2, pero no el 3
+    expect(screen.getByTestId("pedido-card-1")).toBeInTheDocument();
+    expect(screen.getByTestId("pedido-card-2")).toBeInTheDocument();
+    expect(screen.queryByTestId("pedido-card-3")).not.toBeInTheDocument();
   });
 });
