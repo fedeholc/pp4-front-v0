@@ -163,7 +163,9 @@ describe("TecnicoFacturas", () => {
 
     // Wait for payment dialog to open
     await waitFor(() => {
-      expect(screen.getByText("Procesar Pago - Nueva Factura")).toBeInTheDocument();
+      expect(
+        screen.getByText("Procesar Pago - Nueva Factura")
+      ).toBeInTheDocument();
     });
 
     // Click confirm payment button
