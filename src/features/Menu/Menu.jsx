@@ -63,11 +63,11 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/cliente/nuevo-pedido")}
                 >
-                  Solicitar servicio
+                  Solicitar&nbsp;servicio
                 </Button>
               </Stack>
             </Grid>
-            <Grid size={1}>
+           {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -79,7 +79,7 @@ export function Menu() {
                   Cancelar pedido
                 </Button>
               </Stack>
-            </Grid>
+            </Grid> */}
             <Grid size={1}>
               <Stack
                 direction="column"
@@ -98,7 +98,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid size={1}>
+           {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -110,7 +110,7 @@ export function Menu() {
                   Calificar técnico
                 </Button>
               </Stack>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Container>
       </Paper>
@@ -228,10 +228,7 @@ export function Menu() {
         <Typography variant="h4" fontWeight="bold">
           Menú Principal
         </Typography>
-        <Typography variant="h6">
-          Bienvenido, {user?.email || "Usuario"}
-        </Typography>
-        <Typography variant="body1">Rol: {user?.rol || "-"}</Typography>
+
         {user?.rol === "cliente" && <MenuCliente />}
         {user?.rol === "tecnico" && <MenuTecnico />}
       </Stack>

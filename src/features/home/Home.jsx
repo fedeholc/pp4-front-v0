@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import "@src/App.css";
 import { Layout } from "../../components/Layout";
 import { Person, Group, Login } from "@mui/icons-material";
+import LogoAsistec from "../../assets/logo-asistec.jpg";
 
 export function Home() {
   const navigate = useNavigate();
@@ -18,10 +19,10 @@ export function Home() {
         alignItems="center"
         justifyContent="center"
         height="100%"
-        gap={4}
+        gap={2}
         sx={{
           /*           background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
-           */ padding: 4,
+           */ padding: 1,
         }}
       >
         <Stack direction="column" gap={4} alignItems="center">
@@ -36,6 +37,11 @@ export function Home() {
           >
             Bienvenido a Asistec
           </Typography>
+          <img
+            height={100}
+            style={{ borderRadius: "1rem" }}
+            src={LogoAsistec}
+          />
           <Typography
             variant="h6"
             color="text.secondary"
