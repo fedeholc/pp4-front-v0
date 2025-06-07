@@ -4,7 +4,7 @@ import {
   validateEmail,
   calculateDateDifference,
   capitalizeFirstLetter,
-} from "../utils/index";
+} from "./utils";
 
 describe("Utility Functions", () => {
   describe("formatCurrency", () => {
