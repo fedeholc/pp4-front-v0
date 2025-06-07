@@ -420,6 +420,13 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
                   />
                 </Box>
 
+                {/* Mostrar error solo dentro del formulario de calificación */}
+                {error && (
+                  <Alert severity="error" role="alert">
+                    {error}
+                  </Alert>
+                )}
+
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                   <Button
                     variant="outlined"
@@ -447,7 +454,8 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
             </Box>
           </Collapse>
 
-          {error && (
+          {/* Mostrar error de cancelación fuera del formulario de calificación */}
+          {error && !showCalificacion && (
             <Box mt={2}>
               <Alert severity="error" role="alert">
                 {error}
