@@ -35,18 +35,21 @@ export function Layout({ children }) {
     <div className="layout">
       {/*  <Navbar /> */}
       <ResponsiveAppBar></ResponsiveAppBar>
-      <Stack justifyContent="flex-end" flexDirection="row">
-        <Typography
-          variant="body1"
-          style={{
-            padding: "0.5rem 1rem",
-            color: "#367100",
-            fontWeight: "bold",
-          }}
-        >
-          {userText}
-        </Typography>
-      </Stack>
+      <Container maxWidth="xl">
+        {" "}
+        <Stack justifyContent="flex-end" flexDirection="row">
+          <Typography
+            variant="body1"
+            style={{
+              padding: "0.5rem 0rem",
+              color: "#367100",
+              fontWeight: "bold",
+            }}
+          >
+            {userText}
+          </Typography>
+        </Stack>
+      </Container>
       <main>{children}</main>
       <Footer />
     </div>
