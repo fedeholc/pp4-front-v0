@@ -29,6 +29,16 @@ export default defineConfig({
       "@src": path.resolve(__dirname, "./src"), // Alias para la carpeta 'src'
     },
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.js",
+    css: {
+      modules: {
+        classNameStrategy: "non-scoped",
+      },
+    },
+  },
   plugins: [
     {
       name: "ignore-use-client-warnings",
