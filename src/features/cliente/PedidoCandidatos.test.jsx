@@ -47,7 +47,7 @@ describe("PedidoCandidatos Component", () => {
   const mockPedido = {
     id: 10,
     requerimiento: "Arreglar enchufe",
-    estado: "sin_candidatos", // string literal válido para el enum
+    estado: /** @type {"sin_candidatos"} */ ("sin_candidatos"), // string literal válido para el enum
     tecnicoId: null,
     area: { id: 1, nombre: "Electricidad" },
     candidatos: [
