@@ -14,10 +14,9 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import "./Layout.css";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import { Handyman } from "@mui/icons-material";
+import { Handyman, AccountCircle } from "@mui/icons-material";
 import { Stack } from "@mui/material";
 
 export function Layout({ children }) {
@@ -39,7 +38,11 @@ export function Layout({ children }) {
       <Stack justifyContent="flex-end" flexDirection="row">
         <Typography
           variant="body1"
-          style={{ padding: "0.5rem 1rem", color: "#367100", fontWeight: "bold" }}
+          style={{
+            padding: "0.5rem 1rem",
+            color: "#367100",
+            fontWeight: "bold",
+          }}
         >
           {userText}
         </Typography>
@@ -62,7 +65,7 @@ function Footer() {
 
 function ResponsiveAppBar() {
   const pages = ["Registrarme", "Login", "Menú Principal"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Logout"];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
@@ -191,11 +194,13 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-           
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-         
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, color: "white" }}
+            >
+              <AccountCircle sx={{ fontSize: 40 }} />
+            </IconButton>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
