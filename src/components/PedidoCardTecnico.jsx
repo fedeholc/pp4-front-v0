@@ -275,7 +275,13 @@ export function PedidoCardTecnico({ pedido, displayButtons }) {
                     disabled={isRespondiendo}
                   />
                 </Box>
-
+                {error && (
+                  <Box mt={2}>
+                    <Alert severity="error" role="alert">
+                      {error}
+                    </Alert>
+                  </Box>
+                )}
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                   <Button
                     variant="outlined"
@@ -306,11 +312,6 @@ export function PedidoCardTecnico({ pedido, displayButtons }) {
             </Box>
           </Collapse>
 
-          {error && (
-            <Box mt={2}>
-              <Alert severity="error">{error}</Alert>
-            </Box>
-          )}
           {success && (
             <Box mt={2}>
               <Alert severity="success">{success}</Alert>
