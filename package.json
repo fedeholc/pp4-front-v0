@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.0",
     "@mui/x-date-pickers": "^8.3.1",
     "@phosphor-icons/react": "^2.1.7",
+    "@rollup/rollup-win32-x64-msvc": "^4.41.1",
     "date-fns": "^4.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
