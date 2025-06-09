@@ -17,8 +17,9 @@ import { PedidoCandidatos } from "./features/cliente/PedidoCandidatos";
 import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
 import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
 import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
+import { TecnicoFacturas } from "./features/tecnico/TecnicoFacturas";
 
-function App() {
+function App(props) {
   const themeOptions = {
     cssVariables: true,
     palette: {
@@ -32,11 +33,15 @@ function App() {
     },
   };
   const theme = createTheme(themeOptions);
+  // Permitir pasar initialEntries solo en test (BrowserRouter real lo ignora)
+  const browserRouterProps = props.initialEntries
+    ? { initialEntries: props.initialEntries }
+    : {};
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter {...browserRouterProps}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -65,6 +70,7 @@ function App() {
               path="/tecnico/mis-pedidos"
               element={<TecnicoMisPedidos />}
             />
+            <Route path="/tecnico/facturas" element={<TecnicoFacturas />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

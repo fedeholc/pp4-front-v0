@@ -63,11 +63,11 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/cliente/nuevo-pedido")}
                 >
-                  Solicitar servicio
+                  Solicitar&nbsp;servicio
                 </Button>
               </Stack>
             </Grid>
-            <Grid size={1}>
+            {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -79,7 +79,7 @@ export function Menu() {
                   Cancelar pedido
                 </Button>
               </Stack>
-            </Grid>
+            </Grid> */}
             <Grid size={1}>
               <Stack
                 direction="column"
@@ -98,7 +98,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            <Grid size={1}>
+            {/*  <Grid size={1}>
               <Stack
                 direction="column"
                 alignItems="center"
@@ -110,7 +110,7 @@ export function Menu() {
                   Calificar técnico
                 </Button>
               </Stack>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Container>
       </Paper>
@@ -187,7 +187,12 @@ export function Menu() {
                 spacing={1}
               >
                 <MoneyWavy size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
+                <Button
+                  className="button"
+                  size="large"
+                  onClick={() => navigate("/tecnico/facturas")}
+                  variant="contained"
+                >
                   Pagar membresía
                 </Button>
               </Stack>
@@ -200,8 +205,13 @@ export function Menu() {
                 spacing={1}
               >
                 <FileMagnifyingGlass size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
-                  Historial de servicios
+                <Button
+                  onClick={() => navigate(`/tecnico/${user.tecnico.id}/perfil`)}
+                  className="button"
+                  size="large"
+                  variant="contained"
+                >
+                  Ver Mi Perfil
                 </Button>
               </Stack>
             </Grid>
@@ -223,10 +233,7 @@ export function Menu() {
         <Typography variant="h4" fontWeight="bold">
           Menú Principal
         </Typography>
-        <Typography variant="h6">
-          Bienvenido, {user?.email || "Usuario"}
-        </Typography>
-        <Typography variant="body1">Rol: {user?.rol || "-"}</Typography>
+
         {user?.rol === "cliente" && <MenuCliente />}
         {user?.rol === "tecnico" && <MenuTecnico />}
       </Stack>

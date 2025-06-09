@@ -66,7 +66,6 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
       }
     }
 
-    
     if (
       pedido.estado === PedidoEstadoEnum.Enum.con_candidatos &&
       pedido.candidatos &&
@@ -421,6 +420,13 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
                   />
                 </Box>
 
+                {/* Mostrar error solo dentro del formulario de calificación */}
+                {error && (
+                  <Alert severity="error" role="alert">
+                    {error}
+                  </Alert>
+                )}
+
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                   <Button
                     variant="outlined"
@@ -438,7 +444,7 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
                     variant="contained"
                     color="warning"
                     onClick={handleCalificarTecnico}
-                    disabled={isCalificando || calificacionValue === 0}
+                    disabled={isCalificando}
                     startIcon={<Star />}
                   >
                     {isCalificando ? "Guardando..." : "Guardar Calificación"}
@@ -448,9 +454,12 @@ export function PedidoCardCliente({ pedido, displayButtons }) {
             </Box>
           </Collapse>
 
-          {error && (
+          {/* Mostrar error de cancelación fuera del formulario de calificación */}
+          {error && !showCalificacion && (
             <Box mt={2}>
-              <Alert severity="error">{error}</Alert>
+              <Alert severity="error" role="alert">
+                {error}
+              </Alert>
             </Box>
           )}
           {success && (

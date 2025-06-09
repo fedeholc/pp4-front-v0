@@ -14,17 +14,43 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../contexts/UserContext";
 import "./Layout.css";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import { Handyman } from "@mui/icons-material";
+import { Handyman, AccountCircle } from "@mui/icons-material";
+import { Stack } from "@mui/material";
 
 export function Layout({ children }) {
+  const { user } = useContext(UserContext);
+  let userText = null;
+  if (user && user.tecnico) {
+    userText =
+      user.tecnico.nombre + " " + user.tecnico.apellido + ` (${user.email})`;
+  } else if (user && user.cliente) {
+    userText =
+      user.cliente.nombre + " " + user.cliente.apellido + ` (${user.email})`;
+  } else {
+    userText = "Invitado";
+  }
   return (
     <div className="layout">
       {/*  <Navbar /> */}
       <ResponsiveAppBar></ResponsiveAppBar>
-      <main  >{children}</main>
+      <Container maxWidth="xl">
+        {" "}
+        <Stack justifyContent="flex-end" flexDirection="row">
+          <Typography
+            variant="body1"
+            style={{
+              padding: "0.5rem 0rem",
+              color: "#367100",
+              fontWeight: "bold",
+            }}
+          >
+            {userText}
+          </Typography>
+        </Stack>
+      </Container>
+      <main>{children}</main>
       <Footer />
     </div>
   );
@@ -42,7 +68,7 @@ function Footer() {
 
 function ResponsiveAppBar() {
   const pages = ["Registrarme", "Login", "Menú Principal"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Logout"];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
@@ -156,18 +182,28 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={() => handlePageMenuOption(page)}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    color: "#e3f2fd",
+                  },
+                }}
               >
                 {page}
               </Button>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, color: "white" }}
+            >
+              <AccountCircle sx={{ fontSize: 40 }} />
+            </IconButton>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
