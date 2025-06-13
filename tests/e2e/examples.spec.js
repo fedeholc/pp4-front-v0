@@ -99,14 +99,14 @@ test.describe("Playwright Testing Examples", () => {
     await expect(focusedElement).toBeVisible();
   });
 
-  test.skip("Example: Testing file uploads", async ({ page }) => {
+  //test.skip("Example: Testing file uploads", async ({ page }) => {
     // Este test está skippeado porque no tenemos un formulario de upload
     // await page.goto('/upload');
     // const fileInput = page.locator('input[type="file"]');
     // await fileInput.setInputFiles('path/to/test-file.jpg');
     // await page.click('[data-testid="upload-button"]');
     // await expect(page.getByText('File uploaded successfully')).toBeVisible();
-  });
+  //});
 
   test("Example: Testing drag and drop", async ({ page }) => {
     await page.goto("/");
