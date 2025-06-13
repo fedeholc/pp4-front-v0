@@ -27,3 +27,9 @@ dist-ssr
 pp4*.code-workspace
 
 coverage/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
