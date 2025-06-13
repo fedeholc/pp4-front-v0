@@ -1,5 +1,5 @@
-import { defineConfig, devices } from "@playwright/test";
 import process from "process";
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * @see https://playwright.dev/docs/test-configuration
