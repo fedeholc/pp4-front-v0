@@ -253,7 +253,24 @@ export function Menu() {
                   variant="contained"
                   onClick={() => navigate("/admin/suscripciones")}
                 >
-                  Administrar suscripiones
+                  Administrar&nbsp;suscripciones
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid size={1}>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/admin/pedidos")}
+                >
+                  Administrar pedidos
                 </Button>
               </Stack>
             </Grid>

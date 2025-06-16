@@ -20,6 +20,7 @@ import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
 import { TecnicoFacturas } from "./features/tecnico/TecnicoFacturas";
 import { AdminUsuarios } from "./features/admin/AdminUsuarios";
 import { AdminSuscripciones } from "./features/admin/AdminSuscripciones";
+import { AdminPedidos } from "./features/admin/AdminPedidos";
 
 function App(props) {
   const themeOptions = {
@@ -60,6 +61,7 @@ function App(props) {
               path="/admin/suscripciones"
               element={<AdminSuscripciones />}
             />
+            <Route path="/admin/pedidos" element={<AdminPedidos />} />
 
             <Route path="/register/cliente" element={<RegisterCliente />} />
             <Route path="/register/tecnico" element={<RegisterTecnico />} />
