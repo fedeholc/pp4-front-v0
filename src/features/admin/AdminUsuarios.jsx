@@ -23,6 +23,8 @@ import {
   InputLabel,
   Snackbar,
   Alert,
+  TableSortLabel,
+  TablePagination,
 } from "@mui/material";
 import { Edit, Delete, Add } from "@mui/icons-material";
 import { Layout } from "../../components/Layout";
@@ -55,6 +57,10 @@ export function AdminUsuarios() {
     message: "",
     severity: "success",
   });
+  const [order, setOrder] = useState("asc"); // "asc" | "desc"
+  const [orderBy, setOrderBy] = useState("id");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const fetchUsuarios = async () => {
     setLoading(true);
@@ -157,6 +163,39 @@ export function AdminUsuarios() {
     }
   };
 
+  // Ordenar usuarios
+  function stableSort(array, comparator) {
+    const stabilized = array.map((el, idx) => [el, idx]);
+    stabilized.sort((a, b) => {
+      const cmp = comparator(a[0], b[0]);
+      if (cmp !== 0) return cmp;
+      return a[1] - b[1];
+    });
+    return stabilized.map((el) => el[0]);
+  }
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) return -1;
+    if (b[orderBy] > a[orderBy]) return 1;
+    return 0;
+  }
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Layout>
       <Container maxWidth="md" sx={{ height: "100%" }}>
@@ -177,35 +216,91 @@ export function AdminUsuarios() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Rol</TableCell>
+                <TableCell
+                  sortDirection={
+                    orderBy === "id"
+                      ? order === "desc"
+                        ? "desc"
+                        : "asc"
+                      : false
+                  }
+                >
+                  <TableSortLabel
+                    active={orderBy === "id"}
+                    direction={
+                      orderBy === "id" && order === "desc" ? "desc" : "asc"
+                    }
+                    onClick={(e) => handleRequestSort(e, "id")}
+                  >
+                    ID
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell
+                  sortDirection={
+                    orderBy === "email"
+                      ? order === "desc"
+                        ? "desc"
+                        : "asc"
+                      : false
+                  }
+                >
+                  <TableSortLabel
+                    active={orderBy === "email"}
+                    direction={
+                      orderBy === "email" && order === "desc" ? "desc" : "asc"
+                    }
+                    onClick={(e) => handleRequestSort(e, "email")}
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell
+                  sortDirection={
+                    orderBy === "rol"
+                      ? order === "desc"
+                        ? "desc"
+                        : "asc"
+                      : false
+                  }
+                >
+                  <TableSortLabel
+                    active={orderBy === "rol"}
+                    direction={
+                      orderBy === "rol" && order === "desc" ? "desc" : "asc"
+                    }
+                    onClick={(e) => handleRequestSort(e, "rol")}
+                  >
+                    Rol
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {usuarios.map((u) => (
-                <TableRow key={u.id}>
-                  <TableCell>{u.id}</TableCell>
-                  <TableCell>{u.email}</TableCell>
-                  <TableCell>{u.rol}</TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      onClick={() => handleOpenDialog(u)}
-                      size="small"
-                    >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(u)}
-                      size="small"
-                      color="error"
-                    >
-                      <Delete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {stableSort(usuarios, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell>{u.id}</TableCell>
+                    <TableCell>{u.email}</TableCell>
+                    <TableCell>{u.rol}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={() => handleOpenDialog(u)}
+                        size="small"
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleDelete(u)}
+                        size="small"
+                        color="error"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
               {usuarios.length === 0 && !loading && (
                 <TableRow>
                   <TableCell colSpan={4} align="center">
@@ -215,6 +310,16 @@ export function AdminUsuarios() {
               )}
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={usuarios.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="Filas por página"
+          />
         </TableContainer>
         {/* Dialogo para crear/editar usuario */}
         <Dialog open={openDialog} onClose={handleCloseDialog}>
