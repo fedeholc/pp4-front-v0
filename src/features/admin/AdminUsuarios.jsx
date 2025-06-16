@@ -61,6 +61,7 @@ export function AdminUsuarios() {
   const [orderBy, setOrderBy] = useState("id");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [search, setSearch] = useState("");
 
   const fetchUsuarios = async () => {
     setLoading(true);
@@ -163,6 +164,17 @@ export function AdminUsuarios() {
     }
   };
 
+  // Filtrado de usuarios
+  const filteredUsuarios = usuarios.filter((u) => {
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      (u.email && u.email.toLowerCase().includes(q)) ||
+      (u.rol && u.rol.toLowerCase().includes(q)) ||
+      (u.id && String(u.id).includes(q))
+    );
+  });
+
   // Ordenar usuarios
   function stableSort(array, comparator) {
     const stabilized = array.map((el, idx) => [el, idx]);
@@ -212,6 +224,17 @@ export function AdminUsuarios() {
         >
           Nuevo Usuario
         </Button>
+        <TextField
+          label="Buscar usuario"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(0);
+          }}
+          sx={{ mb: 2, ml: 2 }}
+        />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -277,7 +300,7 @@ export function AdminUsuarios() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(usuarios, getComparator(order, orderBy))
+              {stableSort(filteredUsuarios, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((u) => (
                   <TableRow key={u.id}>
@@ -313,7 +336,7 @@ export function AdminUsuarios() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={usuarios.length}
+            count={filteredUsuarios.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
