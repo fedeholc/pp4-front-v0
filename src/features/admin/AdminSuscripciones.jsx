@@ -242,6 +242,7 @@ export function AdminSuscripciones() {
                     </TableSortLabel>
                   </TableCell>
                   <TableCell align="right">Detalle</TableCell>
+                  <TableCell align="right">Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -264,9 +265,24 @@ export function AdminSuscripciones() {
                             : "-"}
                         </TableCell>
                         <TableCell align="right">
-                          <IconButton onClick={() => handleOpenDialog(tecnico)}>
-                            <Receipt />
-                          </IconButton>
+                          <Button
+                            variant="outlined"
+                            startIcon={<Receipt />}
+                            size="small"
+                            onClick={() => handleOpenDialog(tecnico)}
+                          >
+                            Ver&nbsp;facturas
+                          </Button>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button
+                            variant="outlined"
+                            color="warning"
+                            size="small"
+                            sx={{ ml: 1 }}
+                          >
+                            SUSPENDER
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
