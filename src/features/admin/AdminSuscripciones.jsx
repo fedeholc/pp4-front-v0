@@ -21,7 +21,7 @@ import {
 import { Receipt } from "@mui/icons-material";
 import { Layout } from "../../components/Layout";
 import { UserContext } from "../../contexts/UserContext";
-import { getTecnicos, getFacturas } from "../../api";
+import { getTecnicos, getFacturas, getUsuarios } from "../../api";
 
 function formatDate(date) {
   if (!date) return "-";
@@ -36,6 +36,7 @@ export function AdminSuscripciones() {
   const { token } = useContext(UserContext) || {};
   const [tecnicos, setTecnicos] = useState([]);
   const [facturas, setFacturas] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedTecnico, setSelectedTecnico] = useState(null);
@@ -44,12 +45,14 @@ export function AdminSuscripciones() {
     async function fetchData() {
       setLoading(true);
       try {
-        const [tecnicosData, facturasData] = await Promise.all([
+        const [tecnicosData, facturasData, usuariosData] = await Promise.all([
           getTecnicos(token),
           getFacturas(token),
+          getUsuarios(token),
         ]);
         setTecnicos(tecnicosData);
         setFacturas(facturasData);
+        setUsuarios(usuariosData);
       } finally {
         setLoading(false);
       }
@@ -109,11 +112,14 @@ export function AdminSuscripciones() {
                 {tecnicos.map((tecnico) => {
                   const facturasPagas = getFacturasPagas(tecnico);
                   const ultimaFactura = facturasPagas[0];
+                  const usuario = usuarios.find(
+                    (u) => u.id === tecnico.usuarioId
+                  );
                   return (
                     <TableRow key={tecnico.id}>
                       <TableCell>{tecnico.nombre}</TableCell>
                       <TableCell>{tecnico.apellido}</TableCell>
-                      <TableCell>{tecnico.email}</TableCell>
+                      <TableCell>{usuario?.email || "-"}</TableCell>
                       <TableCell>
                         {ultimaFactura ? formatDate(ultimaFactura.fecha) : "-"}
                       </TableCell>
