@@ -18,6 +18,9 @@ import { TecnicoPerfil } from "./features/tecnico/TecnicoPerfil";
 import { PedidosDisponibles } from "./features/tecnico/PedidosDisponibles";
 import { TecnicoMisPedidos } from "./features/tecnico/TecnicoMisPedidos";
 import { TecnicoFacturas } from "./features/tecnico/TecnicoFacturas";
+import { AdminUsuarios } from "./features/admin/AdminUsuarios";
+import { AdminSuscripciones } from "./features/admin/AdminSuscripciones";
+import { AdminPedidos } from "./features/admin/AdminPedidos";
 
 function App(props) {
   const themeOptions = {
@@ -53,6 +56,13 @@ function App(props) {
                 </ProtectedRoute>
               }
             />
+            <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+            <Route
+              path="/admin/suscripciones"
+              element={<AdminSuscripciones />}
+            />
+            <Route path="/admin/pedidos" element={<AdminPedidos />} />
+
             <Route path="/register/cliente" element={<RegisterCliente />} />
             <Route path="/register/tecnico" element={<RegisterTecnico />} />
             <Route path="/cliente/nuevo-pedido" element={<PedidoNuevo />} />

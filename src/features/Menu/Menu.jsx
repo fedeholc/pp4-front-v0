@@ -67,19 +67,7 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            {/*  <Grid size={1}>
-              <Stack
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                spacing={1}
-              >
-                <ReceiptX size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
-                  Cancelar pedido
-                </Button>
-              </Stack>
-            </Grid> */}
+
             <Grid size={1}>
               <Stack
                 direction="column"
@@ -98,19 +86,6 @@ export function Menu() {
                 </Button>
               </Stack>
             </Grid>
-            {/*  <Grid size={1}>
-              <Stack
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                spacing={1}
-              >
-                <StarHalf size={60} weight="duotone" />
-                <Button className="button" size="large" variant="contained">
-                  Calificar técnico
-                </Button>
-              </Stack>
-            </Grid> */}
           </Grid>
         </Container>
       </Paper>
@@ -221,6 +196,90 @@ export function Menu() {
     );
   }
 
+  function MenuAdmin() {
+    return (
+      <Paper
+        className="gradientBackground"
+        elevation={4}
+        variant="outlined"
+        sx={{
+          p: 5,
+          borderRadius: 4,
+          minWidth: { xs: 320, sm: 400 },
+          background: "linear-gradient(345deg, #eaff0005, #eaff0010)",
+          boxShadow: 1,
+          border: "1px solid #e0e0e0",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="sm">
+          <Grid
+            container
+            alignContent={"center"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            spacing={4}
+            columns={{ xs: 1, sm: 2 }}
+          >
+            <Grid size={1}>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/admin/usuarios")}
+                >
+                  Administrar usuarios
+                </Button>
+              </Stack>
+            </Grid>
+
+            <Grid size={1}>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/admin/suscripciones")}
+                >
+                  Administrar&nbsp;suscripciones
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid size={1}>
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Button
+                  className="button"
+                  size="large"
+                  variant="contained"
+                  onClick={() => navigate("/admin/pedidos")}
+                >
+                  Administrar pedidos
+                </Button>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Container>
+      </Paper>
+    );
+  }
+
   return (
     <Layout>
       <Stack
@@ -236,6 +295,7 @@ export function Menu() {
 
         {user?.rol === "cliente" && <MenuCliente />}
         {user?.rol === "tecnico" && <MenuTecnico />}
+        {user?.rol === "admin" && <MenuAdmin />}
       </Stack>
     </Layout>
   );

@@ -28,6 +28,8 @@ export function Layout({ children }) {
   } else if (user && user.cliente) {
     userText =
       user.cliente.nombre + " " + user.cliente.apellido + ` (${user.email})`;
+  } else if (user && user.rol === "admin") {
+    userText = `Administrador (${user.email})`;
   } else {
     userText = "Invitado";
   }
