@@ -20,6 +20,34 @@ Una versión dockerizada y con deploy a AWS (realizada para el Seminario de Actu
 
 En la documentación del mismo se explica cómo correr el proyecto con Docker. La explicación que sigue es para correr el proyecto sin Docker, de manera local.
 
+## Cómo correr el frontend
+
+1. Clonar el repositorio:
+
+   ```bash
+   git clone https://github.com/fedeholc/pp4-front-v0.git
+   ```
+
+2. Entrar al directorio del proyecto:
+
+   ```bash
+   cd pp4-front-v0
+   ```
+
+3. Instalar las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+4. Iniciar el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Abrir el navegador en `http://localhost:5173` para ver la aplicación en acción.
+
 ## 🚀 Scripts disponibles
 
 ### Desarrollo
