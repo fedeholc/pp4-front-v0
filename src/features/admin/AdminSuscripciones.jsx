@@ -159,37 +159,83 @@ export function AdminSuscripciones() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sortDirection={orderBy === "nombre" ? (order === "desc" ? "desc" : "asc") : false}>
+                  <TableCell
+                    sortDirection={
+                      orderBy === "nombre"
+                        ? order === "desc"
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                  >
                     <TableSortLabel
                       active={orderBy === "nombre"}
-                      direction={orderBy === "nombre" && order === "desc" ? "desc" : "asc"}
+                      direction={
+                        orderBy === "nombre" && order === "desc"
+                          ? "desc"
+                          : "asc"
+                      }
                       onClick={(e) => handleRequestSort(e, "nombre")}
                     >
                       Nombre
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell sortDirection={orderBy === "apellido" ? (order === "desc" ? "desc" : "asc") : false}>
+                  <TableCell
+                    sortDirection={
+                      orderBy === "apellido"
+                        ? order === "desc"
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                  >
                     <TableSortLabel
                       active={orderBy === "apellido"}
-                      direction={orderBy === "apellido" && order === "desc" ? "desc" : "asc"}
+                      direction={
+                        orderBy === "apellido" && order === "desc"
+                          ? "desc"
+                          : "asc"
+                      }
                       onClick={(e) => handleRequestSort(e, "apellido")}
                     >
                       Apellido
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell sortDirection={orderBy === "email" ? (order === "desc" ? "desc" : "asc") : false}>
+                  <TableCell
+                    sortDirection={
+                      orderBy === "email"
+                        ? order === "desc"
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                  >
                     <TableSortLabel
                       active={orderBy === "email"}
-                      direction={orderBy === "email" && order === "desc" ? "desc" : "asc"}
+                      direction={
+                        orderBy === "email" && order === "desc" ? "desc" : "asc"
+                      }
                       onClick={(e) => handleRequestSort(e, "email")}
                     >
                       Email
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell sortDirection={orderBy === "ultimaFactura" ? (order === "desc" ? "desc" : "asc") : false}>
+                  <TableCell
+                    sortDirection={
+                      orderBy === "ultimaFactura"
+                        ? order === "desc"
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                  >
                     <TableSortLabel
                       active={orderBy === "ultimaFactura"}
-                      direction={orderBy === "ultimaFactura" && order === "desc" ? "desc" : "asc"}
+                      direction={
+                        orderBy === "ultimaFactura" && order === "desc"
+                          ? "desc"
+                          : "asc"
+                      }
                       onClick={(e) => handleRequestSort(e, "ultimaFactura")}
                     >
                       Última factura paga
@@ -204,14 +250,18 @@ export function AdminSuscripciones() {
                   .map((tecnico) => {
                     const facturasPagas = getFacturasPagas(tecnico);
                     const ultimaFactura = facturasPagas[0];
-                    const usuario = usuarios.find((u) => u.id === tecnico.usuarioId);
+                    const usuario = usuarios.find(
+                      (u) => u.id === tecnico.usuarioId
+                    );
                     return (
                       <TableRow key={tecnico.id}>
                         <TableCell>{tecnico.nombre}</TableCell>
                         <TableCell>{tecnico.apellido}</TableCell>
                         <TableCell>{usuario?.email || "-"}</TableCell>
                         <TableCell>
-                          {ultimaFactura ? formatDate(ultimaFactura.fecha) : "-"}
+                          {ultimaFactura
+                            ? formatDate(ultimaFactura.fecha)
+                            : "-"}
                         </TableCell>
                         <TableCell align="right">
                           <IconButton onClick={() => handleOpenDialog(tecnico)}>
