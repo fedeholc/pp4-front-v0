@@ -33,6 +33,13 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/test/setup.js",
+    exclude: [
+      "tests/e2e/**",
+      "**/tests/e2e/**",
+      "**/e2e/**",
+      "node_modules/**",
+      "dist/**",
+    ],
     css: {
       modules: {
         classNameStrategy: "non-scoped",
