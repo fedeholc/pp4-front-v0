@@ -241,8 +241,8 @@ export function AdminSuscripciones() {
                       Última factura paga
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align="right">Detalle</TableCell>
-                  <TableCell align="right">Acciones</TableCell>
+                  <TableCell>Detalle</TableCell>
+                  <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
